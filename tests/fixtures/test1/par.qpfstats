@@ -1,9 +1,0 @@
-genotypename: test1.geno
-snpname:      test1.snp
-indivname:    test1.ind
-poplistname:  poplist
-fstatsoutname: test1.fstats
-allsnps:      NO
-hires:        YES
-inbreed:      NO
-noxdata:      YES
