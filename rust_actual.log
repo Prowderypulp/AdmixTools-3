@@ -1,0 +1,17 @@
+qpWave: parameter file: tests/fixtures/test_wave/par.qpwave
+### THE INPUT PARAMETERS
+##PARAMETER NAME: VALUE
+fstatsname: test123.fstats
+##PARAMETER NAME: VALUE
+popleft: popleft
+##PARAMETER NAME: VALUE
+popright: popright
+##PARAMETER NAME: VALUE
+allsnps: YES
+## -------------
+left pops:
+             popleft
+
+right pops:
+            popright
+

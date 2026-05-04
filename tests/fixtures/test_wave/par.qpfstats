@@ -1,0 +1,9 @@
+genotypename: test123.geno
+snpname:      test123.snp
+indivname:    test123.ind
+poplistname:  poplist
+fstatsoutname: test123.fstats
+allsnps:      YES
+hires:        YES
+inbreed:      NO
+noxdata:      YES

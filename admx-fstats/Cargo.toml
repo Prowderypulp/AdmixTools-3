@@ -1,0 +1,12 @@
+[package]
+name = "admx-fstats"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+
+[dependencies]
+admx-core.workspace = true
+admx-io.workspace = true
+ndarray.workspace = true
+rayon.workspace = true

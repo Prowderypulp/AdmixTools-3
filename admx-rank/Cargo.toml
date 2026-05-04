@@ -1,0 +1,15 @@
+[package]
+name = "admx-rank"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+
+[dependencies]
+admx-core.workspace = true
+ndarray.workspace = true
+libm = "0.2.8"
+# BLAS/LAPACK symbols come transitively through admx-core's openblas-src link.
+# We only need the Rust-side function signatures here.
+lapack.workspace = true
+blas.workspace = true
