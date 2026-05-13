@@ -1,3 +1,4 @@
 *.md
+target/
 tests/
 *.log
