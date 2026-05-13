@@ -73,6 +73,8 @@ pub struct QpfstatsResult {
     pub covar: Array2<f64>,
     pub w3: Array1<f64>,
     pub wls_stderr: Array1<f64>,
+    pub fsmean: Array1<f64>,
+    pub fssig: Array1<f64>,
     pub lambdascale: f64,
     pub num_snps: usize,
     pub valid_snps: usize,
@@ -340,14 +342,17 @@ pub fn run_qpfstats(
     }
 
     // Per-fstat jackknife. 
+    let mut jest = vec![0.0_f64; nfstats];
     let mut jsig = vec![0.0_f64; nfstats];
     for j in 0..nfstats {
         if gbot[j] < 0.001 {
+            jest[j] = gtop[j];
             jsig[j] = 1.0e6;
             continue;
         }
         let jmean_j: Vec<f64> = active_blocks.iter().map(|&k| btop[k][j]).collect();
-        let (_, sig) = wjackest(gtop[j], &jmean_j, &active_wjack);
+        let (est, sig) = wjackest(gtop[j], &jmean_j, &active_wjack);
+        jest[j] = est;
         jsig[j] = sig;
     }
 
@@ -446,6 +451,8 @@ pub fn run_qpfstats(
         covar: Array2::from_shape_vec((nbasis, nbasis), covar_flat).unwrap(),
         w3: Array1::from_vec(w3),
         wls_stderr,
+        fsmean: Array1::from_vec(jest.clone()),
+        fssig: Array1::from_vec(jsig.clone()),
         lambdascale,
         num_snps: wjack.iter().sum::<f64>() as usize,
         valid_snps: valid_snps_total,

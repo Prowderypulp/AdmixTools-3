@@ -31,6 +31,15 @@ impl LegacyLcg {
         Self { _dummy: () }
     }
 
+    /// Generate the next pseudo-random value in [0, 1) using a single `random()` call.
+    /// This matches the C `DRAND()` macro used by `gauss()`.
+    pub fn next_f64_drand(&mut self) -> f64 {
+        unsafe {
+            let r = random() % (i32::MAX as std::ffi::c_long);
+            (r as f64) / (i32::MAX as f64)
+        }
+    }
+
     /// Generate the next pseudo-random value in [0, 1).
     ///
     /// Must match the C `ranmod()` output sequence exactly.

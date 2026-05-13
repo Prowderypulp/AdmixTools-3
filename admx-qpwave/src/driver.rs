@@ -200,8 +200,13 @@ pub fn run_qpwave(config: &QpWaveConfig) -> AdmxResult<Vec<F4Info>> {
         }
     }
     let diagvarplus = config.yscale;
+    let mut trace = 0.0;
     for i in 0..(nl * nr) {
-        yvar[i * (nl * nr) + i] += diagvarplus;
+        trace += yvar[i * (nl * nr) + i];
+    }
+    let y = diagvarplus * trace;
+    for i in 0..(nl * nr) {
+        yvar[i * (nl * nr) + i] += y;
     }
 
     let ret = checkmv(&ymean, &yvar, nl, nr);

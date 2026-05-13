@@ -6,6 +6,7 @@ use admx_io::params::ParFile;
 use admx_qpadm::driver::{run_qpadm, QpAdmConfig};
 
 fn main() -> AdmxResult<()> {
+    admx_core::linalg::set_blas_single_threaded();
     let args: Vec<String> = env::args().collect();
     let par_idx = args.iter().position(|a| a == "-p").expect("Missing -p parfile");
     let par_path = Path::new(&args[par_idx + 1]);

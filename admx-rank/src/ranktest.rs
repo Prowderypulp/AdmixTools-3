@@ -3,6 +3,53 @@ use admx_core::linalg::{dspev_l, pdinv, dgemm};
 use admx_core::types::F4Info;
 use crate::normab::normab;
 
+#[cfg(target_os = "linux")]
+unsafe extern "C" {
+    fn random() -> std::ffi::c_long;
+}
+
+#[cfg(not(target_os = "linux"))]
+unsafe extern "C" {
+    fn random() -> std::ffi::c_long;
+}
+
+fn drand2() -> f64 {
+    let maxran = 1.0 - f64::EPSILON;
+    let maxran1 = (i32::MAX as f64 - 1.0) / (i32::MAX as f64);
+    let eps = maxran - maxran1;
+    unsafe {
+        let r1 = random() % (i32::MAX as std::ffi::c_long);
+        let r2 = random() % (i32::MAX as std::ffi::c_long);
+        let x = (r1 as f64) / (i32::MAX as f64);
+        let y = (r2 as f64) / (i32::MAX as f64);
+        x + y * eps
+    }
+}
+
+fn gaussa_legacy(x: &mut [f64]) {
+    let mut iset = 0;
+    let mut gset = 0.0;
+    for out in x.iter_mut() {
+        if iset == 0 {
+            let (v1, v2, rsq) = loop {
+                let v1 = 2.0 * drand2() - 1.0;
+                let v2 = 2.0 * drand2() - 1.0;
+                let rsq = v1 * v1 + v2 * v2;
+                if rsq < 1.0 && rsq != 0.0 {
+                    break (v1, v2, rsq);
+                }
+            };
+            let fac = (-2.0 * rsq.ln() / rsq).sqrt();
+            gset = v1 * fac;
+            iset = 1;
+            *out = v2 * fac;
+        } else {
+            iset = 0;
+            *out = gset;
+        }
+    }
+}
+
 pub fn dofrank(m: usize, n: usize, rank: usize) -> usize {
     if rank >= m || rank >= n { return 0; }
     if rank == 0 { return m * n; }
@@ -144,12 +191,53 @@ fn scx(a: &[f64], mean: &[f64], x: &[f64], n: usize) -> f64 {
 
 /// Helper to solve a symmetric positive-definite system Ax = b using pdinv
 fn solvit(a: &mut [f64], b: &[f64], n: usize, x: &mut [f64]) -> Result<(), i32> {
-    pdinv(n, a)?;
+    let mut l = vec![0.0_f64; n * n];
     for i in 0..n {
-        x[i] = 0.0;
-        for j in 0..n {
-            x[i] += a[i * n + j] * b[j];
+        for j in 0..=i {
+            let mut s = a[i * n + j];
+            for k in 0..j {
+                s -= l[i * n + k] * l[j * n + k];
+            }
+            if i == j {
+                if s <= 0.0 || !s.is_finite() {
+                    return Err(-1);
+                }
+                l[i * n + j] = s.sqrt();
+            } else {
+                let d = l[j * n + j];
+                if d == 0.0 || !d.is_finite() {
+                    return Err(-1);
+                }
+                l[i * n + j] = s / d;
+            }
         }
+    }
+
+    // Forward solve: L y = b
+    let mut y = vec![0.0_f64; n];
+    for i in 0..n {
+        let mut s = b[i];
+        for k in 0..i {
+            s -= l[i * n + k] * y[k];
+        }
+        let d = l[i * n + i];
+        if d == 0.0 {
+            return Err(-1);
+        }
+        y[i] = s / d;
+    }
+
+    // Back solve: L^T x = y
+    for i in (0..n).rev() {
+        let mut s = y[i];
+        for k in (i + 1)..n {
+            s -= l[k * n + i] * x[k];
+        }
+        let d = l[i * n + i];
+        if d == 0.0 {
+            return Err(-1);
+        }
+        x[i] = s / d;
     }
     Ok(())
 }
@@ -246,7 +334,9 @@ pub fn ranktest(
     
     for i in 0..rank {
         for j in 0..n {
-            b[i * n + j] = evecs[j * n + i];
+            // dspev returns eigenvectors in column-major order; C copies
+            // contiguous column blocks into B.
+            b[i * n + j] = evecs[i * n + j];
         }
     }
 
@@ -365,8 +455,8 @@ pub fn ranktest(
 fn solvitforcez(coeffs: &mut [f64], rhs: &mut [f64], dim: usize, ans: &mut [f64], vl: &[usize]) -> Result<(), i32> {
     let mut tco = vec![0.0; dim * dim];
     let mut trhs = vec![0.0; dim];
-    tco.copy_from_slice(coeffs);
-    trhs.copy_from_slice(rhs);
+    tco.copy_from_slice(&coeffs[..dim * dim]);
+    trhs.copy_from_slice(&rhs[..dim]);
 
     for &v in vl {
         for k in 0..dim {
@@ -433,37 +523,8 @@ pub fn ranktestfix(
     let mut rhs = vec![0.0; tdim];
     let mut ans = vec![0.0; tdim];
 
-    // C gaussa initializes with standard normal. 
-    // Here we use a pseudo-random approach or ones just to be deterministic.
-    // Given iter goes to 50, standard normal is better. Let's use basic deterministic LCG
-    let mut seed = 123456789u32;
-    let mut next_rand = || -> f64 {
-        seed = seed.wrapping_mul(1103515245).wrapping_add(12345);
-        (seed as f64 / (std::u32::MAX as f64)) * 2.0 - 1.0
-    };
-
-    let mut iset = false;
-    let mut gset = 0.0;
-    let mut gauss = || -> f64 {
-        if iset {
-            iset = false;
-            return gset;
-        }
-        loop {
-            let v1 = next_rand();
-            let v2 = next_rand();
-            let rsq = v1 * v1 + v2 * v2;
-            if rsq < 1.0 && rsq > 0.0 {
-                let fac = (-2.0 * rsq.ln() / rsq).sqrt();
-                gset = v1 * fac;
-                iset = true;
-                return v2 * fac;
-            }
-        }
-    };
-
-    for i in 0..adim { a[i] = gauss(); }
-    for i in 0..bdim { b[i] = gauss(); }
+    gaussa_legacy(&mut a[..adim]);
+    gaussa_legacy(&mut b[..bdim]);
     
     normab(&mut a, &mut b, m, n, rank);
 

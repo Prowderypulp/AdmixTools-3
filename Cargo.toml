@@ -7,6 +7,7 @@ members = [
     "admx-qpwave",
     "admx-qpadm",
     "admx-cli",
+    "admx-bench",
 ]
 resolver = "2"
 

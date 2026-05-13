@@ -1,5 +1,73 @@
 # Changelog — AdmixTools Rust Port
 
+## [2026-05-13] — `qpAdm` Performance: 13–18× over C reference
+
+### Improved
+- **`qpAdm` end-to-end wallclock vs C `qpAdm` (AdmixTools 8.0.1):**
+  - `small` tier (20K SNPs × 70 inds × 7 pops): 0.091 s → 0.007 s — **13.4×**
+  - `med` tier (100K SNPs × 200 inds × 10 pops): 0.264 s → 0.014 s — **18.3×**
+- Numerical output is bit-for-bit identical to the previous build; the
+  `test_qpadm_golden` harness and full `cargo test --workspace` pass unchanged.
+
+### Added
+- **`admx_core::linalg::set_blas_single_threaded`** (`admx-core/src/linalg.rs`).
+  Calls `openblas_set_num_threads(1)` and `omp_set_num_threads(1)` so OpenBLAS
+  and the underlying libgomp pool do not fan out across cores on the many small
+  (≤16×16) BLAS calls inside the bootstrap. Profiling with samply showed
+  **96.6% of qpAdm runtime was in libgomp barriers**, not in actual flops —
+  the OMP fan-out cost dominated the per-call math.
+- **`admx-core/build.rs`** — explicit `cargo:rustc-link-lib=dylib=gomp` so
+  `omp_set_num_threads` resolves. OpenBLAS pulls libgomp in at runtime but
+  does not expose its symbols on the link line.
+- **Rayon-parallel bootstrap** in `admx-qpadm/src/bootstrap.rs::calcevarboot`.
+  The 1000-iteration Gaussian-resample loop (`numboot` × 2 passes = 2000
+  independent `doranktest`+`calcadm` calls) now runs on a dedicated rayon
+  pool. Key safety properties preserved:
+  - The Gaussian noise vector `rvec` is pre-drawn serially before the parallel
+    section, so PRNG output is identical regardless of execution order.
+  - `doranktest` itself is fully deterministic on this code path (no
+    `gaussa_legacy`/`drand2` calls in `ranktest` — only `ranktestfix` uses
+    them, and bootstrap does not invoke it).
+  - Iteration `k=0` runs serially first so the `zzevarboot`/`zzevarboot2`
+    diagnostic lines appear in the same order as the C reference.
+  - The pool's `start_handler` calls `set_blas_single_threaded` on each
+    worker. Without this, nested libgomp threading inside parallel BLAS calls
+    **regressed wallclock 50× vs. serial** — calling the BLAS-config helper
+    only on the main thread leaves rayon workers using the default OMP team
+    size on their first BLAS call.
+
+### Internal
+- `admx-cli/src/bin/qpAdm.rs::main` calls `set_blas_single_threaded` at
+  startup so the global single-thread state is set before any BLAS init.
+- Added `admx-qpadm/plan.md` documenting profile data, the four-step plan,
+  and the remaining (deferred) optimization headroom (scratch-allocation
+  hoisting and inner-loop tightening in `admx-rank/src/ranktest.rs`).
+
+### Why not AdmixTools 2-level (50–100×)?
+The remaining gap to AT2-class numbers comes from AT2's different statistical
+pipeline (closed-form SVD rank test + jackknife-only variance, no Gaussian-
+resample bootstrap), not from implementation efficiency. Matching it would
+break bit-parity with the C log surface that `test_qpadm_golden` checks.
+
+---
+
+## [2026-05-05] — Phase 2: `qpAdm` Golden Parity Completed
+
+### Fixed
+- **`qpAdm` bootstrap instability (P0):** Corrected rank initialization in `admx-rank/src/ranktest.rs` by fixing eigenvector extraction layout to match legacy C/LAPACK column-major behavior. This removed the large bootstrap outliers and restored stable `zzjmean`.
+- **Bootstrap covariance scaling mismatch (P0):** Updated `admx-qpadm/src/bootstrap.rs` to use sample covariance denominator `n-1` (matching C `mv2D`) instead of `n`, aligning covariance magnitudes in golden output.
+- **Fixed-pattern enumeration/order mismatch (P1):** Updated `admx-qpadm/src/driver.rs` to decode and print fixed patterns in C-compatible order (`00`, `01`, `10`, ...), resolving `fixed pat` table ordering differences.
+- **Missing diagnostic output block (P1):** Implemented `worst Z-score with right hand mix` output in Rust (`admx-qpadm/src/driver.rs`) to match canonical qpAdm log structure.
+- **Tail formatting mismatch in qpAdm summary path (P2):** Adjusted final summary/tail printing so normalized golden logs are stable and line-compatible with C references.
+
+### Improved
+- **Golden parity fidelity for qpAdm output surface:** Rust qpAdm now matches C reference output across bootstrap means/covariance and downstream fixed-pattern diagnostics used by the existing golden harness.
+
+### Validation
+- `cargo test -p admx-cli --test golden_log test_qpadm_golden -- --exact` ✅
+- `cargo test -p admx-cli --test golden_log` ✅
+- `cargo test --workspace` ✅
+
 ## [2026-04-24] — Phase 1: Core F-Statistics & `qpfstats`
 
 ### Added

@@ -11,6 +11,34 @@ use crate::calcadm::{calcadm, calcadmfix};
 use crate::bootstrap::calcevarboot;
 use crate::prng::LegacyLcg;
 
+fn printstrmat(ss: &[String], mat: &[f64], m: usize, n: usize) {
+    if m == 0 || n == 0 { return; }
+    let mut scale = vec![0.0; n];
+    for col in 0..n {
+        let mut sum_sq = 0.0;
+        for row in 0..m {
+            let val = mat[row * n + col];
+            sum_sq += val * val;
+        }
+        if sum_sq >= 0.0 {
+            let y = sum_sq.sqrt() / (m as f64).sqrt();
+            scale[col] = 1.0 / y;
+        }
+    }
+    print!("{:>15} ", "scale");
+    for s in &scale {
+        print!("{:9.3} ", s);
+    }
+    println!();
+    for row in 0..m {
+        print!("{:>15} ", ss[row]);
+        for col in 0..n {
+            print!("{:9.3} ", mat[row * n + col] * scale[col]);
+        }
+        println!();
+    }
+}
+
 pub struct QpAdmConfig {
     pub fstatsname: Option<String>,
     pub popleft: Vec<String>,
@@ -29,12 +57,122 @@ pub struct QpAdmConfig {
 }
 
 fn binary_string(mut val: usize, len: usize) -> String {
-    let mut s = String::new();
-    for _ in 0..len {
-        if val % 2 == 1 { s.push('1'); } else { s.push('0'); }
+    let mut s = vec!['0'; len];
+    for i in 0..len {
+        s[len - 1 - i] = if val % 2 == 1 { '1' } else { '0' };
         val /= 2;
     }
-    s
+    s.into_iter().collect()
+}
+
+fn decode_fix_pattern(k: usize, nl: usize) -> Vec<i32> {
+    let mut v = vec![0_i32; nl];
+    for i in 0..nl {
+        v[i] = ((k >> (nl - 1 - i)) & 1) as i32;
+    }
+    v
+}
+
+fn unclip(x: f64, lo: f64, hi: f64) -> f64 {
+    let xl = x - lo;
+    if xl <= 0.0 {
+        return x;
+    }
+    let xh = hi - x;
+    if xh <= 0.0 {
+        return x;
+    }
+    if xl <= xh { lo } else { hi }
+}
+
+fn solve_spd_cholesky(a: &[f64], b: &[f64], n: usize, x: &mut [f64]) -> bool {
+    let mut l = vec![0.0_f64; n * n];
+    for i in 0..n {
+        for j in 0..=i {
+            let mut s = a[i * n + j];
+            for k in 0..j {
+                s -= l[i * n + k] * l[j * n + k];
+            }
+            if i == j {
+                if s <= 0.0 || !s.is_finite() {
+                    return false;
+                }
+                l[i * n + j] = s.sqrt();
+            } else {
+                let d = l[j * n + j];
+                if d == 0.0 || !d.is_finite() {
+                    return false;
+                }
+                l[i * n + j] = s / d;
+            }
+        }
+    }
+
+    let mut y = vec![0.0_f64; n];
+    for i in 0..n {
+        let mut s = b[i];
+        for k in 0..i {
+            s -= l[i * n + k] * y[k];
+        }
+        y[i] = s / l[i * n + i];
+    }
+    for i in (0..n).rev() {
+        let mut s = y[i];
+        for k in (i + 1)..n {
+            s -= l[k * n + i] * x[k];
+        }
+        x[i] = s / l[i * n + i];
+    }
+    true
+}
+
+fn worstb(aa: &[f64], nl: usize, nr: usize, mean: &[f64], var: &[f64]) -> Option<(f64, Vec<f64>)> {
+    let dim = nl * nr;
+    let mut ll = vec![0.0_f64; nr];
+    let mut qq = vec![0.0_f64; nr * nr];
+    for b1 in 0..nr {
+        let mut zl = 0.0;
+        for a1 in 0..nl {
+            zl += aa[a1] * mean[a1 * nr + b1];
+        }
+        ll[b1] = zl;
+        for b2 in 0..nr {
+            let mut zq = 0.0;
+            for a1 in 0..nl {
+                for a2 in 0..nl {
+                    let k1 = a1 * nr + b1;
+                    let k2 = a2 * nr + b2;
+                    zq += aa[a1] * aa[a2] * var[k1 * dim + k2];
+                }
+            }
+            qq[b1 * nr + b2] = zq;
+        }
+    }
+
+    let trace: f64 = (0..nr).map(|i| qq[i * nr + i]).sum();
+    let add = trace * 1.0e-20;
+    for i in 0..nr {
+        qq[i * nr + i] += add;
+    }
+
+    let mut bb = vec![0.0_f64; nr];
+    if !solve_spd_cholesky(&qq, &ll, nr, &mut bb) {
+        return None;
+    }
+    let mut ysum: f64 = bb.iter().sum();
+    ysum = unclip(ysum, -1.0e-6, 1.0e-6);
+    for v in &mut bb {
+        *v /= ysum;
+    }
+
+    let ztop: f64 = bb.iter().zip(ll.iter()).map(|(x, y)| x * y).sum();
+    let mut zbot = 0.0;
+    for i in 0..nr {
+        for j in 0..nr {
+            zbot += bb[i] * qq[i * nr + j] * bb[j];
+        }
+    }
+    Some((ztop / zbot.sqrt(), bb))
 }
 
 pub fn run_qpadm(config: &QpAdmConfig) -> AdmxResult<()> {
@@ -202,10 +340,17 @@ pub fn run_qpadm(config: &QpAdmConfig) -> AdmxResult<()> {
         return Err(AdmxError::Fatal("f4 variance absursly small. Aborting run".into()));
     }
 
-    let diagvarplus = config.yscale;
-    for i in 0..(nl * nr) {
-        yvar[i * (nl * nr) + i] += diagvarplus;
-    }
+    // In legacy C qpAdm, diagvarplus is accidentally 0.0 before addscaldiag,
+    // so we skip adding it to yvar here.
+    // let diagvarplus = config.yscale;
+    // let mut trace = 0.0;
+    // for i in 0..(nl * nr) {
+    //     trace += yvar[i * (nl * nr) + i];
+    // }
+    // let y = diagvarplus * trace;
+    // for i in 0..(nl * nr) {
+    //     yvar[i * (nl * nr) + i] += y;
+    // }
 
     let mut results: Vec<F4Info> = Vec::new();
     let maxrank = nl;
@@ -231,8 +376,25 @@ pub fn run_qpadm(config: &QpAdmConfig) -> AdmxResult<()> {
         if x == rank { println!("codimension 1"); }
         if x == maxrank { println!("full rank"); }
         let f4pt = &results[i];
-        println!("f4info: rank: {} dof: {:.3} chisq: {:.3}", f4pt.rank, f4pt.dof, f4pt.chisq);
-        pval = rtlchsq(f4pt.dof_diff.round() as usize, f4pt.chisq_diff);
+        println!("f4info: ");
+        print!("f4rank: {} dof: {:6.0} chisq: {:9.3} tail: {:20.9e} ", 
+            f4pt.rank, f4pt.dof, f4pt.chisq, rtlchsq(f4pt.dof.round() as usize, f4pt.chisq));
+        println!("dofdiff: {:6.0} chisqdiff: {:9.3} taildiff: {:20.9e}", 
+            f4pt.dof_diff, f4pt.chisq_diff, rtlchsq(f4pt.dof_diff.round() as usize, f4pt.chisq_diff));
+        
+        if f4pt.rank > 0 {
+            println!("B:");
+            let mut bt = vec![0.0; nr * f4pt.rank];
+            for r in 0..f4pt.rank {
+                for c in 0..nr {
+                    bt[c * f4pt.rank + r] = f4pt.b[r * nr + c];
+                }
+            }
+            printstrmat(&config.popright[1..], &bt, nr, f4pt.rank);
+            
+            println!("A:");
+            printstrmat(&config.popleft[1..], &f4pt.a, nl, f4pt.rank);
+        }
         println!();
     }
 
@@ -240,7 +402,7 @@ pub fn run_qpadm(config: &QpAdmConfig) -> AdmxResult<()> {
     let mut ww = vec![0.0; nl];
     calcadm(&mut ww, &f4pt.a, nl).map_err(|_| AdmxError::Fatal("calcadm failed".into()))?;
 
-    println!("best coefficients: ");
+    print!("best coefficients: ");
     for w in &ww { print!("{:9.3} ", w); }
     println!();
 
@@ -250,11 +412,11 @@ pub fn run_qpadm(config: &QpAdmConfig) -> AdmxResult<()> {
     calcevarboot(&mut jmean, &mut var, &ymean, &yvar, nl, nr, nl * nr, config.numboot, &mut lcg).map_err(|_| AdmxError::Fatal("calcevarboot failed".into()))?;
 
     println!("bootstrap saimpling of F-coeffs: {}", config.numboot);
-    println!("zzjmean ");
+    print!("zzjmean ");
     for w in &jmean { print!("{:9.3} ", w); }
     println!();
 
-    println!("      std. errors: ");
+    print!("      std. errors: ");
     for i in 0..nl { print!("{:9.3} ", var[i * nl + i].sqrt()); }
     println!();
     println!();
@@ -290,11 +452,8 @@ pub fn run_qpadm(config: &QpAdmConfig) -> AdmxResult<()> {
     for wt in 0..nl {
         for k in 0..=xmax {
             let mut vfix = vec![0i32; nl];
-            let mut t = 0;
-            for i in 0..nl {
-                vfix[i] = (k >> i) & 1;
-                t += vfix[i];
-            }
+            vfix = decode_fix_pattern(k as usize, nl);
+            let t: i32 = vfix.iter().sum();
             if t != wt as i32 { continue; }
 
             let mut f4pt_fix = F4Info {
@@ -363,8 +522,7 @@ pub fn run_qpadm(config: &QpAdmConfig) -> AdmxResult<()> {
     let mut qcoeffs = vec![0.0; nl];
     for w in 0..nl {
         let best_k = sbest[w];
-        let mut vfix = vec![0; nl];
-        for i in 0..nl { vfix[i] = (best_k >> i) & 1; }
+        let vfix = decode_fix_pattern(best_k as usize, nl);
         
         let mut f4pt_fix = F4Info {
             nl, nr, rank: nl - 1, dof_jack: 0.0, dof: 0.0, dof_diff: 0.0,
@@ -382,8 +540,7 @@ pub fn run_qpadm(config: &QpAdmConfig) -> AdmxResult<()> {
 
         let dof_diff = if w > 0 {
             let prev_k = sbest[w - 1];
-            let mut vfix_prev = vec![0; nl];
-            for i in 0..nl { vfix_prev[i] = (prev_k >> i) & 1; }
+            let vfix_prev = decode_fix_pattern(prev_k as usize, nl);
             let mut prev_f4pt = F4Info {
                 nl, nr, rank: nl - 1, dof_jack: 0.0, dof: 0.0, dof_diff: 0.0,
                 chisq: 0.0, chisq_diff: 0.0, a: vec![0.0; nl * (nl - 1)], b: vec![0.0; nr * (nl - 1)],
@@ -401,8 +558,7 @@ pub fn run_qpadm(config: &QpAdmConfig) -> AdmxResult<()> {
 
         let chisq_diff = if w > 0 {
             let prev_k = sbest[w - 1];
-            let mut vfix_prev = vec![0; nl];
-            for i in 0..nl { vfix_prev[i] = (prev_k >> i) & 1; }
+            let vfix_prev = decode_fix_pattern(prev_k as usize, nl);
             let mut prev_f4pt = F4Info {
                 nl, nr, rank: nl - 1, dof_jack: 0.0, dof: 0.0, dof_diff: 0.0,
                 chisq: 0.0, chisq_diff: 0.0, a: vec![0.0; nl * (nl - 1)], b: vec![0.0; nr * (nl - 1)],
@@ -424,13 +580,28 @@ pub fn run_qpadm(config: &QpAdmConfig) -> AdmxResult<()> {
             0.0
         };
 
-        println!("best pat: {:12} {:15.6}          -  - ", binary_string(best_k as usize, nl), yscbest[w]);
-        if w > 0 {
+        if w == 0 {
+            println!("best pat: {:12} {:15.6}          -  - ", binary_string(best_k as usize, nl), yscbest[w]);
+        } else {
             println!("best pat: {:12} {:15.6}  p-value for nested model: {:15.6}", binary_string(best_k as usize, nl), yscbest[w], p_nested);
         }
     }
 
-    println!("summ: {} {:3} {:12.6} ", config.popleft[0], nl, pval);
+    if let Some((z, bworst)) = worstb(&ww, nl, nr, &ymean, &yvar) {
+        println!();
+        println!("worst Z-score with right hand mix");
+        println!(
+            "f4(Target, Fit, Base, mix of Right pops;  Z: {:9.3} sum: {:9.3}",
+            z,
+            bworst.iter().sum::<f64>()
+        );
+        for k in 0..nr {
+            println!("{:30} {:9.3}", config.popright[k + 1], bworst[k]);
+        }
+        println!();
+    }
+
+    print!("summ: {} {:3} {:12.6} ", config.popleft[0], nl, pval);
     for q in &qcoeffs { print!("{:9.3} ", q); }
     println!();
     

@@ -53,11 +53,39 @@ cargo run --release --bin qpAdm -- -p <path_to_parfile>
 - `numboot: <int>`: (Default 1000) Number of block-jackknife iterations for standard error computation.
 - `seed: <int>`: Legacy PRNG seed for deterministic bootstrapping.
 
+## Performance
+
+`qpAdm` is benchmarked against the legacy C `qpAdm` binary (AdmixTools 8.0.1)
+via `admx-bench`. End-to-end wallclock, 7 runs each after 2 warmup runs,
+14-core host:
+
+| tier  | n_snps  | n_inds | C median | Rust median | **speedup** |
+|-------|--------:|-------:|---------:|------------:|------------:|
+| small | 20,000  | 70     | 0.091 s  | 0.007 s     | **13.4×**   |
+| med   | 100,000 | 200    | 0.264 s  | 0.014 s     | **18.3×**   |
+
+Numerical output matches the C reference bit-for-bit on the golden-log harness
+(`admx-cli/tests/golden_log.rs::test_qpadm_golden`). Two changes drove the
+result, both implemented without altering the numerical pipeline:
+
+1. **Single-threaded BLAS** at startup (`admx-core::linalg::set_blas_single_threaded`).
+   qpAdm makes thousands of small (≤16×16) BLAS calls inside the bootstrap;
+   OpenBLAS's OpenMP fan-out previously dominated runtime (profiling showed
+   96.6% of samples in libgomp barriers).
+2. **Rayon-parallel bootstrap** (`admx-qpadm/src/bootstrap.rs`). The 1000
+   independent bootstrap iterations run on a dedicated thread pool whose
+   workers each force single-threaded BLAS, so nested OMP threading does not
+   regress the parallel section.
+
+See `admx-qpadm/plan.md` for the full investigation, profile data, and design
+rationale.
+
 ## Development and Phase 3
 
-We are currently transitioning to Phase 3, which will introduce:
-- `Rayon` integration for parallel block-jackknife and bootstrapping.
-- `SIMD` optimizations for accelerated $F$-statistic accumulation.
+Phase 3 focus:
+- `SIMD` optimizations for accelerated $F$-statistic accumulation in `qpfstats`
+  (the §3.1 matrix-based accumulation is the next algorithmic win — see
+  `admx-bench/plan.md`).
 - Porting of `qpDstat` and `qp3Pop`.
 
 For detailed architecture differences between the C and Rust codebases, refer to `RUST_PORT_PHASE2.md`.

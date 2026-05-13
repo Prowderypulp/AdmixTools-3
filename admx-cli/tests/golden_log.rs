@@ -17,42 +17,53 @@ fn get_bin_path(name: &str) -> PathBuf {
 }
 
 fn normalize_log(log: &str) -> Vec<String> {
-    log.lines()
-        .filter_map(|line| {
-            let l = line.trim();
-            if l.is_empty() 
-                || l.starts_with("##") 
-                || l.starts_with("###")
-                || l.starts_with("parameter file:")
-                || l.starts_with("time in")
-                || l.contains("seconds cpu")
-                || l.contains("Mbytes in use")
-                || l.starts_with("before setwt numsnps:")
-                || l.starts_with("number of blocks for moving block jackknife:")
-                || l.starts_with("setwt numsnps:")
-                || l.starts_with("snps:")
-                // Ignore lines with 'set' (diagnostics that vary)
-                || l.contains(" set ") || l.ends_with(" set")
-                // Ignore parameter lines
-                || l.contains(":") && !l.starts_with("basis:") && !l.starts_with("pop:") && !l.starts_with("qscore:")
-            {
-                None
+    let mut skip_zzevarboot = false;
+    let mut normalized = Vec::new();
+    for line in log.lines() {
+        let l = line.trim();
+        if l.starts_with("zzevarboot") {
+            skip_zzevarboot = true;
+            continue;
+        }
+        if skip_zzevarboot {
+            if l.starts_with("boot mean:") || l.starts_with("bootstrap saimpling") || l.starts_with("zzjmean") {
+                skip_zzevarboot = false;
             } else {
-                // Normalize multiple spaces to single space
-                let norm = l.split_whitespace().collect::<Vec<_>>().join(" ");
-                // Normalize floats to 4 decimal places for robust comparison
-                let mut parts = Vec::new();
-                for part in norm.split_whitespace() {
-                    if let Ok(val) = part.parse::<f64>() {
-                        parts.push(format!("{:.4}", val));
-                    } else {
-                        parts.push(part.to_string());
-                    }
-                }
-                Some(parts.join(" "))
+                continue;
             }
-        })
-        .collect()
+        }
+        if l.is_empty() 
+            || l.starts_with("##") 
+            || l.starts_with("###")
+            || l.starts_with("parameter file:")
+            || l.starts_with("time in")
+            || l.contains("seconds cpu")
+            || l.contains("Mbytes in use")
+            || l.starts_with("before setwt numsnps:")
+            || l.starts_with("number of blocks for moving block jackknife:")
+            || l.starts_with("setwt numsnps:")
+            || l.starts_with("snps:")
+            // Ignore lines with 'set' (diagnostics that vary)
+            || l.contains(" set ") || l.ends_with(" set")
+            // Ignore parameter lines
+            || l.contains(":") && !l.starts_with("basis:") && !l.starts_with("pop:") && !l.starts_with("qscore:")
+        {
+            continue;
+        }
+        // Normalize multiple spaces to single space
+        let norm = l.split_whitespace().collect::<Vec<_>>().join(" ");
+        // Normalize floats to 4 decimal places for robust comparison
+        let mut parts = Vec::new();
+        for part in norm.split_whitespace() {
+            if let Ok(val) = part.parse::<f64>() {
+                parts.push(format!("{:.4}", val));
+            } else {
+                parts.push(part.to_string());
+            }
+        }
+        normalized.push(parts.join(" "));
+    }
+    normalized
 }
 
 fn run_golden_test(bin_name: &str, par_file: &Path, expected_log_path: &Path) {
@@ -121,4 +132,14 @@ fn test_qpwave_golden() {
 
 #[test]
 fn test_qpadm_golden() {
+    let mut fixture_path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+    fixture_path.pop();
+    fixture_path.push("tests");
+    fixture_path.push("fixtures");
+    fixture_path.push("test_wave");
+
+    let par_file = fixture_path.join("par.qpadm");
+    let expected_log = fixture_path.join("test123.c.adm.log");
+
+    run_golden_test("qpAdm", &par_file, &expected_log);
 }

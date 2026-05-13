@@ -194,14 +194,26 @@ fn main() -> AdmxResult<()> {
     // Basis rows
     let basis = FBasis::new(0, np); 
     let basis_stats = basis.stats();
+    let full_stats = FBasis::full_stats(np);
     for i in 0..nbasis {
         let kind = basis_stats[i];
+        let t = if let FStatKind::F3(anchor, a, b) = kind {
+            if a == b {
+                let min_pop = anchor.min(a);
+                let max_pop = anchor.max(a);
+                full_stats.iter().position(|&x| x == FStatKind::F2(min_pop, max_pop)).unwrap()
+            } else {
+                full_stats.iter().position(|&x| x == kind).unwrap()
+            }
+        } else {
+            full_stats.iter().position(|&x| x == kind).unwrap()
+        };
         if let FStatKind::F3(_, a, b) = kind {
             let i1 = pop_list.iter().position(|p| p == &pop_list[a]).unwrap();
             let i2 = pop_list.iter().position(|p| p == &pop_list[b]).unwrap();
             
             println!("basis: {:3} {:3} {:12.6} {:12.6} :: {:12.6} {:12.6}",
-                     i1, i2, result.w3[i], result.wls_stderr[i], means[i], covar[[i, i]].sqrt());
+                     i1, i2, means[i], covar[[i, i]].sqrt(), result.fsmean[t], result.fssig[t]);
         }
     }
 

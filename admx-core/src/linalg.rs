@@ -4,6 +4,32 @@
 //! via a mix of direct calls and `eigx.c` wrappers.  We wrap the same
 //! LAPACK entry points here so the numerical path is identical.
 
+extern "C" {
+    fn openblas_set_num_threads(num_threads: std::ffi::c_int);
+    fn omp_set_num_threads(num_threads: std::ffi::c_int);
+}
+
+/// Force OpenBLAS *and* the OpenMP runtime to use a single thread.
+///
+/// qpAdm does many tiny BLAS calls inside the bootstrap loop. Each multi-
+/// threaded call pays OpenMP fan-out/barrier overhead that dwarfs the actual
+/// flops on small (≤16×16) matrices — profiling showed 96.6% of time in
+/// libgomp barriers. Forcing single-thread BLAS lets a higher-level rayon
+/// parallelization across independent bootstrap iterations actually win.
+///
+/// We also set `OMP_NUM_THREADS=1` in the environment as a safety net for the
+/// libgomp pool, which OpenBLAS dispatches through when built with OpenMP.
+pub fn set_blas_single_threaded() {
+    // SAFETY: env::set_var is single-thread-safe only before any thread pool
+    // is created; callers must invoke this at the top of `main`.
+    std::env::set_var("OMP_NUM_THREADS", "1");
+    std::env::set_var("OPENBLAS_NUM_THREADS", "1");
+    unsafe {
+        openblas_set_num_threads(1);
+        omp_set_num_threads(1);
+    }
+}
+
 /// Compute eigenvalues and eigenvectors of a real symmetric matrix
 /// stored in packed upper-triangular form.
 ///
