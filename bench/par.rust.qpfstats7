@@ -1,0 +1,9 @@
+genotypename: /home/drtex/Disk2/QP/fstatistic/final.geno
+snpname:      /home/drtex/Disk2/QP/fstatistic/final.snp
+indivname:    /home/drtex/Disk2/QP/fstatistic/final.ind
+poplistname:  poplist7
+fstatsoutname: rust7.fstats
+allsnps:      YES
+hires:        YES
+inbreed:      YES
+noxdata:      YES

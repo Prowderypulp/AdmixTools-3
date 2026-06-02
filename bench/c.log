@@ -1,0 +1,107 @@
+parameter file: par.c.qpfstats
+### THE INPUT PARAMETERS
+##PARAMETER NAME: VALUE
+genotypename: /home/drtex/Disk2/QP/fstatistic/final.geno
+snpname: /home/drtex/Disk2/QP/fstatistic/final.snp
+indivname: /home/drtex/Disk2/QP/fstatistic/final.ind
+poplistname: poplist
+fstatsoutname: c.fstats
+allsnps: YES
+hires: YES
+inbreed: YES
+noxdata: YES
+## qpfstats version: 1002
+inbreed set YES
+allsnps set
+inbreed set YES
+np: 9 n: 666 nbasis: 36 coefsize: 23976
+outpop: NULL 
+valid snps: 1150639
+                     pop : size   INBREED
+  0          India_Parsi :   19       YES
+  1            Indus_Low :    2       YES
+  2            Indus_Med :    2       YES
+  3            Indus_Out :    2       YES
+  4           Indus_Out1 :    2       YES
+  5 Iran_ShahrISokhta_BA1.AG :    8       YES
+  6   Israel_Natufian.AG :    5       YES
+  7 Tajikistan_C_Sarazm.AG :    2       YES
+  8 Uzbekistan_SappaliTepe_BA.AG :   11       YES
+before setwt numsnps: 1233013
+setwt numsnps: 797652
+number of blocks for moving block jackknife: 713
+snps: 797652  indivs: 53
+pop:          India_Parsi  hetrate:     0.172 valid snps:    273030 samples:   19 inbreed 
+pop:            Indus_Low  hetrate:     0.171 valid snps:    126812 samples:    2 inbreed 
+pop:            Indus_Med  hetrate:     0.171 valid snps:    266477 samples:    2 inbreed 
+pop:            Indus_Out  hetrate:     0.175 valid snps:     87677 samples:    2 inbreed 
+pop:           Indus_Out1  hetrate:     0.171 valid snps:     35923 samples:    2 inbreed 
+pop: Iran_ShahrISokhta_BA1.AG  hetrate:     0.173 valid snps:    596569 samples:    8 inbreed 
+pop:   Israel_Natufian.AG  hetrate:     0.150 valid snps:    105564 samples:    5 inbreed 
+pop: Tajikistan_C_Sarazm.AG  hetrate:     0.170 valid snps:    283943 samples:    2 inbreed 
+pop: Uzbekistan_SappaliTepe_BA.AG  hetrate:     0.182 valid snps:    776583 samples:   11 inbreed 
+lambdascale:     2.840
+statistics multiplied by 1000
+fst:
+        I    I    I    I    I    I    I    T    U 
+  I     0   15   27   16   23   22   90   26   20
+  I    15    0   -4    4  -10    5  105   14   11
+  I    27   -4    0   11   -6   14  105   21   19
+  I    16    4   11    0   -5    5  100   18    5
+  I    23  -10   -6   -5    0   17  115   33   20
+  I    22    5   14    5   17    0  100    8    4
+  I    90  105  105  100  115  100    0  115   97
+  T    26   14   21   18   33    8  115    0    7
+  U    20   11   19    5   20    4   97    7    0
+
+f2:
+        I    I    I    I    I    I    I    T    U 
+  I     0   15   27   16   23   21   91   26   20
+  I    15    0   -3    3   -9    5  104   13   11
+  I    27   -3    0   10   -6   13  105   20   19
+  I    16    3   10    0   -5    5  101   17    5
+  I    23   -9   -6   -5    0   17  117   33   20
+  I    21    5   13    5   17    0  100    8    4
+  I    91  104  105  101  117  100    0  114   98
+  T    26   13   20   17   33    8  114    0    7
+  U    20   11   19    5   20    4   98    7    0
+
+adjusted sigs: 0
+time in dofstats:    13.387
+basis:   1   1     0.022031     0.002254 ::     0.014718     0.005778
+basis:   1   2     0.025367     0.001216 ::     0.024487     0.003040
+basis:   1   3     0.018936     0.001335 ::     0.019179     0.003113
+basis:   1   4     0.023738     0.001511 ::     0.023690     0.004194
+basis:   1   5     0.020099     0.000804 ::     0.020310     0.002683
+basis:   1   6     0.005151     0.001327 ::     0.005174     0.003371
+basis:   1   7     0.019946     0.001258 ::     0.020640     0.003030
+basis:   1   8     0.015941     0.000683 ::     0.016467     0.002577
+basis:   2   2     0.026866     0.001850 ::     0.026505     0.004130
+basis:   2   3     0.020155     0.001231 ::     0.020514     0.002882
+basis:   2   4     0.023816     0.001363 ::     0.022766     0.003890
+basis:   2   5     0.017855     0.000744 ::     0.018531     0.002504
+basis:   2   6     0.004829     0.001181 ::     0.003932     0.003090
+basis:   2   7     0.016234     0.001095 ::     0.016288     0.002758
+basis:   2   8     0.014694     0.000644 ::     0.014707     0.002387
+basis:   3   3     0.018446     0.002457 ::     0.015580     0.006857
+basis:   3   4     0.020574     0.001468 ::     0.021338     0.003949
+basis:   3   5     0.016681     0.000763 ::     0.016632     0.002497
+basis:   3   6     0.006030     0.001432 ::     0.005294     0.003281
+basis:   3   7     0.016957     0.001233 ::     0.016167     0.002818
+basis:   3   8     0.014471     0.000664 ::     0.014073     0.002384
+basis:   4   4     0.026965     0.003574 ::     0.023337     0.010635
+basis:   4   5     0.016223     0.000977 ::     0.015315     0.003527
+basis:   4   6     0.005737     0.001588 ::     0.005118     0.004366
+basis:   4   7     0.017218     0.001365 ::     0.017875     0.003825
+basis:   4   8     0.014401     0.000795 ::     0.014340     0.003366
+basis:   5   5     0.021650     0.000760 ::     0.021473     0.002437
+basis:   5   6     0.007737     0.000832 ::     0.008540     0.002783
+basis:   5   7     0.021118     0.000803 ::     0.021545     0.002449
+basis:   5   8     0.018720     0.000438 ::     0.019336     0.002151
+basis:   6   6     0.093160     0.002595 ::     0.090998     0.006408
+basis:   6   7     0.004447     0.001221 ::     0.004371     0.003076
+basis:   6   8     0.009296     0.000717 ::     0.009787     0.002629
+basis:   7   7     0.027258     0.001898 ::     0.026273     0.003981
+basis:   7   8     0.019498     0.000667 ::     0.019693     0.002279
+basis:   8   8     0.019454     0.000491 ::     0.020370     0.002036
+##end of qpfstats:       81.001 seconds cpu     1062.744 Mbytes in use

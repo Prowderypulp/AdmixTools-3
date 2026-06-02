@@ -1,0 +1,253 @@
+##fbasis.  basepop: India_Parsi ::  f3*1000 covar*1000000
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG     22.012665
+Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG      7.848618
+Iran_ShahrISokhta_BA1.AG       Indus_Low     20.121544
+Iran_ShahrISokhta_BA1.AG       Indus_Med     18.106906
+Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG     21.286127
+Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG     18.865440
+Israel_Natufian.AG Israel_Natufian.AG     93.978466
+Israel_Natufian.AG       Indus_Low      5.194811
+Israel_Natufian.AG       Indus_Med      4.881958
+Israel_Natufian.AG Tajikistan_C_Sarazm.AG      4.259480
+Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG      9.304463
+      Indus_Low       Indus_Low     21.363136
+      Indus_Low       Indus_Med     25.169783
+      Indus_Low Tajikistan_C_Sarazm.AG     19.697342
+      Indus_Low Uzbekistan_SappaliTepe_BA.AG     15.864783
+      Indus_Med       Indus_Med     26.745394
+      Indus_Med Tajikistan_C_Sarazm.AG     16.387858
+      Indus_Med Uzbekistan_SappaliTepe_BA.AG     14.687317
+Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG     27.477075
+Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG     19.587090
+Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG     19.446809
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG   Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG       0.599870
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG   Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG       0.088946
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG   Iran_ShahrISokhta_BA1.AG       Indus_Low       0.196968
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG   Iran_ShahrISokhta_BA1.AG       Indus_Med       0.230610
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG   Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG       0.287240
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG   Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG       0.214557
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG   Israel_Natufian.AG Israel_Natufian.AG      -0.195673
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG   Israel_Natufian.AG       Indus_Low       0.054952
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG   Israel_Natufian.AG       Indus_Med      -0.013066
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG   Israel_Natufian.AG Tajikistan_C_Sarazm.AG       0.032115
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG   Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG       0.005083
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG         Indus_Low       Indus_Low       0.145313
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG         Indus_Low       Indus_Med       0.012476
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG         Indus_Low Tajikistan_C_Sarazm.AG       0.026006
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG         Indus_Low Uzbekistan_SappaliTepe_BA.AG       0.071245
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG         Indus_Med       Indus_Med       0.045372
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG         Indus_Med Tajikistan_C_Sarazm.AG       0.027269
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG         Indus_Med Uzbekistan_SappaliTepe_BA.AG       0.060708
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG   Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG       0.108468
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG   Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG       0.105205
+Iran_ShahrISokhta_BA1.AG Iran_ShahrISokhta_BA1.AG   Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG       0.075244
+Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG   Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG       0.692742
+Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG   Iran_ShahrISokhta_BA1.AG       Indus_Low       0.073263
+Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG   Iran_ShahrISokhta_BA1.AG       Indus_Med       0.073040
+Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG   Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG       0.073726
+Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG   Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG       0.078982
+Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG   Israel_Natufian.AG Israel_Natufian.AG       0.497089
+Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG   Israel_Natufian.AG       Indus_Low       0.397443
+Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG   Israel_Natufian.AG       Indus_Med       0.347881
+Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG   Israel_Natufian.AG Tajikistan_C_Sarazm.AG       0.386775
+Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG   Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG       0.321203
+Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG         Indus_Low       Indus_Low      -0.010882
+Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG         Indus_Low       Indus_Med       0.054106
+Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG         Indus_Low Tajikistan_C_Sarazm.AG       0.055808
+Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG         Indus_Low Uzbekistan_SappaliTepe_BA.AG       0.038768
+Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG         Indus_Med       Indus_Med       0.047806
+Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG         Indus_Med Tajikistan_C_Sarazm.AG      -0.057985
+Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG         Indus_Med Uzbekistan_SappaliTepe_BA.AG       0.047799
+Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG   Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG       0.087389
+Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG   Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG       0.034359
+Iran_ShahrISokhta_BA1.AG Israel_Natufian.AG   Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG       0.039551
+Iran_ShahrISokhta_BA1.AG       Indus_Low   Iran_ShahrISokhta_BA1.AG       Indus_Low       0.632308
+Iran_ShahrISokhta_BA1.AG       Indus_Low   Iran_ShahrISokhta_BA1.AG       Indus_Med       0.152865
+Iran_ShahrISokhta_BA1.AG       Indus_Low   Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG       0.199939
+Iran_ShahrISokhta_BA1.AG       Indus_Low   Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG       0.126200
+Iran_ShahrISokhta_BA1.AG       Indus_Low   Israel_Natufian.AG Israel_Natufian.AG      -0.184248
+Iran_ShahrISokhta_BA1.AG       Indus_Low   Israel_Natufian.AG       Indus_Low       0.250765
+Iran_ShahrISokhta_BA1.AG       Indus_Low   Israel_Natufian.AG       Indus_Med      -0.006938
+Iran_ShahrISokhta_BA1.AG       Indus_Low   Israel_Natufian.AG Tajikistan_C_Sarazm.AG      -0.013606
+Iran_ShahrISokhta_BA1.AG       Indus_Low   Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG      -0.010580
+Iran_ShahrISokhta_BA1.AG       Indus_Low         Indus_Low       Indus_Low       0.587189
+Iran_ShahrISokhta_BA1.AG       Indus_Low         Indus_Low       Indus_Med       0.260372
+Iran_ShahrISokhta_BA1.AG       Indus_Low         Indus_Low Tajikistan_C_Sarazm.AG       0.339613
+Iran_ShahrISokhta_BA1.AG       Indus_Low         Indus_Low Uzbekistan_SappaliTepe_BA.AG       0.296062
+Iran_ShahrISokhta_BA1.AG       Indus_Low         Indus_Med       Indus_Med       0.200605
+Iran_ShahrISokhta_BA1.AG       Indus_Low         Indus_Med Tajikistan_C_Sarazm.AG       0.063160
+Iran_ShahrISokhta_BA1.AG       Indus_Low         Indus_Med Uzbekistan_SappaliTepe_BA.AG       0.067368
+Iran_ShahrISokhta_BA1.AG       Indus_Low   Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG       0.138776
+Iran_ShahrISokhta_BA1.AG       Indus_Low   Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG       0.084493
+Iran_ShahrISokhta_BA1.AG       Indus_Low   Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG       0.086030
+Iran_ShahrISokhta_BA1.AG       Indus_Med   Iran_ShahrISokhta_BA1.AG       Indus_Med       0.568065
+Iran_ShahrISokhta_BA1.AG       Indus_Med   Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG       0.140697
+Iran_ShahrISokhta_BA1.AG       Indus_Med   Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG       0.127608
+Iran_ShahrISokhta_BA1.AG       Indus_Med   Israel_Natufian.AG Israel_Natufian.AG      -0.098794
+Iran_ShahrISokhta_BA1.AG       Indus_Med   Israel_Natufian.AG       Indus_Low       0.098129
+Iran_ShahrISokhta_BA1.AG       Indus_Med   Israel_Natufian.AG       Indus_Med       0.134900
+Iran_ShahrISokhta_BA1.AG       Indus_Med   Israel_Natufian.AG Tajikistan_C_Sarazm.AG       0.041235
+Iran_ShahrISokhta_BA1.AG       Indus_Med   Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG       0.020641
+Iran_ShahrISokhta_BA1.AG       Indus_Med         Indus_Low       Indus_Low       0.024833
+Iran_ShahrISokhta_BA1.AG       Indus_Med         Indus_Low       Indus_Med       0.195938
+Iran_ShahrISokhta_BA1.AG       Indus_Med         Indus_Low Tajikistan_C_Sarazm.AG       0.008706
+Iran_ShahrISokhta_BA1.AG       Indus_Med         Indus_Low Uzbekistan_SappaliTepe_BA.AG       0.059720
+Iran_ShahrISokhta_BA1.AG       Indus_Med         Indus_Med       Indus_Med       0.449431
+Iran_ShahrISokhta_BA1.AG       Indus_Med         Indus_Med Tajikistan_C_Sarazm.AG       0.224595
+Iran_ShahrISokhta_BA1.AG       Indus_Med         Indus_Med Uzbekistan_SappaliTepe_BA.AG       0.261354
+Iran_ShahrISokhta_BA1.AG       Indus_Med   Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG      -0.007365
+Iran_ShahrISokhta_BA1.AG       Indus_Med   Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG       0.072353
+Iran_ShahrISokhta_BA1.AG       Indus_Med   Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG       0.062200
+Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG   Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG       0.657471
+Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG   Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG       0.168974
+Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG   Israel_Natufian.AG Israel_Natufian.AG      -0.045442
+Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG   Israel_Natufian.AG       Indus_Low       0.087960
+Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG   Israel_Natufian.AG       Indus_Med      -0.018612
+Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG   Israel_Natufian.AG Tajikistan_C_Sarazm.AG       0.156355
+Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG   Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG       0.017126
+Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG         Indus_Low       Indus_Low       0.136094
+Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG         Indus_Low       Indus_Med       0.038336
+Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG         Indus_Low Tajikistan_C_Sarazm.AG       0.290287
+Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG         Indus_Low Uzbekistan_SappaliTepe_BA.AG       0.101265
+Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG         Indus_Med       Indus_Med      -0.013741
+Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG         Indus_Med Tajikistan_C_Sarazm.AG       0.267647
+Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG         Indus_Med Uzbekistan_SappaliTepe_BA.AG       0.040516
+Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG   Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG       0.526162
+Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG   Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG       0.295930
+Iran_ShahrISokhta_BA1.AG Tajikistan_C_Sarazm.AG   Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG       0.094957
+Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG   Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG       0.197528
+Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG   Israel_Natufian.AG Israel_Natufian.AG      -0.043151
+Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG   Israel_Natufian.AG       Indus_Low       0.058108
+Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG   Israel_Natufian.AG       Indus_Med       0.021905
+Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG   Israel_Natufian.AG Tajikistan_C_Sarazm.AG       0.019422
+Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG   Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG       0.029307
+Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG         Indus_Low       Indus_Low       0.058584
+Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG         Indus_Low       Indus_Med      -0.003261
+Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG         Indus_Low Tajikistan_C_Sarazm.AG       0.022021
+Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG         Indus_Low Uzbekistan_SappaliTepe_BA.AG       0.085979
+Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG         Indus_Med       Indus_Med       0.025375
+Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG         Indus_Med Tajikistan_C_Sarazm.AG       0.052698
+Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG         Indus_Med Uzbekistan_SappaliTepe_BA.AG       0.079164
+Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG   Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG       0.071567
+Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG   Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG       0.108333
+Iran_ShahrISokhta_BA1.AG Uzbekistan_SappaliTepe_BA.AG   Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG       0.127350
+Israel_Natufian.AG Israel_Natufian.AG   Israel_Natufian.AG Israel_Natufian.AG       6.829503
+Israel_Natufian.AG Israel_Natufian.AG   Israel_Natufian.AG       Indus_Low       0.463477
+Israel_Natufian.AG Israel_Natufian.AG   Israel_Natufian.AG       Indus_Med       0.375681
+Israel_Natufian.AG Israel_Natufian.AG   Israel_Natufian.AG Tajikistan_C_Sarazm.AG       0.661645
+Israel_Natufian.AG Israel_Natufian.AG   Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG       0.523917
+Israel_Natufian.AG Israel_Natufian.AG         Indus_Low       Indus_Low      -0.306760
+Israel_Natufian.AG Israel_Natufian.AG         Indus_Low       Indus_Med      -0.249550
+Israel_Natufian.AG Israel_Natufian.AG         Indus_Low Tajikistan_C_Sarazm.AG       0.185469
+Israel_Natufian.AG Israel_Natufian.AG         Indus_Low Uzbekistan_SappaliTepe_BA.AG      -0.064085
+Israel_Natufian.AG Israel_Natufian.AG         Indus_Med       Indus_Med       0.065470
+Israel_Natufian.AG Israel_Natufian.AG         Indus_Med Tajikistan_C_Sarazm.AG      -0.233392
+Israel_Natufian.AG Israel_Natufian.AG         Indus_Med Uzbekistan_SappaliTepe_BA.AG      -0.038408
+Israel_Natufian.AG Israel_Natufian.AG   Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG       0.112185
+Israel_Natufian.AG Israel_Natufian.AG   Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG       0.016987
+Israel_Natufian.AG Israel_Natufian.AG   Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG      -0.014055
+Israel_Natufian.AG       Indus_Low   Israel_Natufian.AG       Indus_Low       1.800287
+Israel_Natufian.AG       Indus_Low   Israel_Natufian.AG       Indus_Med       0.372081
+Israel_Natufian.AG       Indus_Low   Israel_Natufian.AG Tajikistan_C_Sarazm.AG       0.394573
+Israel_Natufian.AG       Indus_Low   Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG       0.324391
+Israel_Natufian.AG       Indus_Low         Indus_Low       Indus_Low       0.585517
+Israel_Natufian.AG       Indus_Low         Indus_Low       Indus_Med       0.191614
+Israel_Natufian.AG       Indus_Low         Indus_Low Tajikistan_C_Sarazm.AG       0.203709
+Israel_Natufian.AG       Indus_Low         Indus_Low Uzbekistan_SappaliTepe_BA.AG       0.224591
+Israel_Natufian.AG       Indus_Low         Indus_Med       Indus_Med       0.180448
+Israel_Natufian.AG       Indus_Low         Indus_Med Tajikistan_C_Sarazm.AG       0.003500
+Israel_Natufian.AG       Indus_Low         Indus_Med Uzbekistan_SappaliTepe_BA.AG       0.047947
+Israel_Natufian.AG       Indus_Low   Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG      -0.015460
+Israel_Natufian.AG       Indus_Low   Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG       0.021058
+Israel_Natufian.AG       Indus_Low   Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG       0.038488
+Israel_Natufian.AG       Indus_Med   Israel_Natufian.AG       Indus_Med       1.403722
+Israel_Natufian.AG       Indus_Med   Israel_Natufian.AG Tajikistan_C_Sarazm.AG       0.362491
+Israel_Natufian.AG       Indus_Med   Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG       0.269869
+Israel_Natufian.AG       Indus_Med         Indus_Low       Indus_Low      -0.210449
+Israel_Natufian.AG       Indus_Med         Indus_Low       Indus_Med       0.160036
+Israel_Natufian.AG       Indus_Med         Indus_Low Tajikistan_C_Sarazm.AG       0.056777
+Israel_Natufian.AG       Indus_Med         Indus_Low Uzbekistan_SappaliTepe_BA.AG       0.019146
+Israel_Natufian.AG       Indus_Med         Indus_Med       Indus_Med       0.302474
+Israel_Natufian.AG       Indus_Med         Indus_Med Tajikistan_C_Sarazm.AG       0.107186
+Israel_Natufian.AG       Indus_Med         Indus_Med Uzbekistan_SappaliTepe_BA.AG       0.150327
+Israel_Natufian.AG       Indus_Med   Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG      -0.022741
+Israel_Natufian.AG       Indus_Med   Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG       0.035743
+Israel_Natufian.AG       Indus_Med   Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG       0.030451
+Israel_Natufian.AG Tajikistan_C_Sarazm.AG   Israel_Natufian.AG Tajikistan_C_Sarazm.AG       1.509490
+Israel_Natufian.AG Tajikistan_C_Sarazm.AG   Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG       0.350555
+Israel_Natufian.AG Tajikistan_C_Sarazm.AG         Indus_Low       Indus_Low      -0.109519
+Israel_Natufian.AG Tajikistan_C_Sarazm.AG         Indus_Low       Indus_Med      -0.005105
+Israel_Natufian.AG Tajikistan_C_Sarazm.AG         Indus_Low Tajikistan_C_Sarazm.AG       0.143767
+Israel_Natufian.AG Tajikistan_C_Sarazm.AG         Indus_Low Uzbekistan_SappaliTepe_BA.AG       0.026189
+Israel_Natufian.AG Tajikistan_C_Sarazm.AG         Indus_Med       Indus_Med      -0.075251
+Israel_Natufian.AG Tajikistan_C_Sarazm.AG         Indus_Med Tajikistan_C_Sarazm.AG       0.095946
+Israel_Natufian.AG Tajikistan_C_Sarazm.AG         Indus_Med Uzbekistan_SappaliTepe_BA.AG       0.014243
+Israel_Natufian.AG Tajikistan_C_Sarazm.AG   Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG       0.360412
+Israel_Natufian.AG Tajikistan_C_Sarazm.AG   Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG       0.156187
+Israel_Natufian.AG Tajikistan_C_Sarazm.AG   Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG       0.030844
+Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG   Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG       0.503744
+Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG         Indus_Low       Indus_Low      -0.106399
+Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG         Indus_Low       Indus_Med       0.008790
+Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG         Indus_Low Tajikistan_C_Sarazm.AG       0.075866
+Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG         Indus_Low Uzbekistan_SappaliTepe_BA.AG       0.032294
+Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG         Indus_Med       Indus_Med       0.037854
+Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG         Indus_Med Tajikistan_C_Sarazm.AG      -0.017837
+Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG         Indus_Med Uzbekistan_SappaliTepe_BA.AG       0.053859
+Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG   Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG       0.066063
+Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG   Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG       0.041569
+Israel_Natufian.AG Uzbekistan_SappaliTepe_BA.AG   Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG       0.061344
+      Indus_Low       Indus_Low         Indus_Low       Indus_Low       5.074975
+      Indus_Low       Indus_Low         Indus_Low       Indus_Med       0.694621
+      Indus_Low       Indus_Low         Indus_Low Tajikistan_C_Sarazm.AG       0.640280
+      Indus_Low       Indus_Low         Indus_Low Uzbekistan_SappaliTepe_BA.AG       0.549886
+      Indus_Low       Indus_Low         Indus_Med       Indus_Med       0.155321
+      Indus_Low       Indus_Low         Indus_Med Tajikistan_C_Sarazm.AG      -0.005729
+      Indus_Low       Indus_Low         Indus_Med Uzbekistan_SappaliTepe_BA.AG       0.021725
+      Indus_Low       Indus_Low   Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG       0.015212
+      Indus_Low       Indus_Low   Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG       0.061055
+      Indus_Low       Indus_Low   Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG       0.038474
+      Indus_Low       Indus_Med         Indus_Low       Indus_Med       1.464845
+      Indus_Low       Indus_Med         Indus_Low Tajikistan_C_Sarazm.AG       0.349978
+      Indus_Low       Indus_Med         Indus_Low Uzbekistan_SappaliTepe_BA.AG       0.268805
+      Indus_Low       Indus_Med         Indus_Med       Indus_Med       0.573145
+      Indus_Low       Indus_Med         Indus_Med Tajikistan_C_Sarazm.AG       0.266562
+      Indus_Low       Indus_Med         Indus_Med Uzbekistan_SappaliTepe_BA.AG       0.231003
+      Indus_Low       Indus_Med   Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG       0.040272
+      Indus_Low       Indus_Med   Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG       0.078139
+      Indus_Low       Indus_Med   Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG       0.023789
+      Indus_Low Tajikistan_C_Sarazm.AG         Indus_Low Tajikistan_C_Sarazm.AG       1.546363
+      Indus_Low Tajikistan_C_Sarazm.AG         Indus_Low Uzbekistan_SappaliTepe_BA.AG       0.315494
+      Indus_Low Tajikistan_C_Sarazm.AG         Indus_Med       Indus_Med       0.195510
+      Indus_Low Tajikistan_C_Sarazm.AG         Indus_Med Tajikistan_C_Sarazm.AG       0.277844
+      Indus_Low Tajikistan_C_Sarazm.AG         Indus_Med Uzbekistan_SappaliTepe_BA.AG       0.040487
+      Indus_Low Tajikistan_C_Sarazm.AG   Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG       0.707387
+      Indus_Low Tajikistan_C_Sarazm.AG   Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG       0.263779
+      Indus_Low Tajikistan_C_Sarazm.AG   Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG       0.031347
+      Indus_Low Uzbekistan_SappaliTepe_BA.AG         Indus_Low Uzbekistan_SappaliTepe_BA.AG       0.459600
+      Indus_Low Uzbekistan_SappaliTepe_BA.AG         Indus_Med       Indus_Med       0.108775
+      Indus_Low Uzbekistan_SappaliTepe_BA.AG         Indus_Med Tajikistan_C_Sarazm.AG       0.058412
+      Indus_Low Uzbekistan_SappaliTepe_BA.AG         Indus_Med Uzbekistan_SappaliTepe_BA.AG       0.085455
+      Indus_Low Uzbekistan_SappaliTepe_BA.AG   Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG       0.056778
+      Indus_Low Uzbekistan_SappaliTepe_BA.AG   Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG       0.109832
+      Indus_Low Uzbekistan_SappaliTepe_BA.AG   Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG       0.112024
+      Indus_Med       Indus_Med         Indus_Med       Indus_Med       3.465226
+      Indus_Med       Indus_Med         Indus_Med Tajikistan_C_Sarazm.AG       0.401805
+      Indus_Med       Indus_Med         Indus_Med Uzbekistan_SappaliTepe_BA.AG       0.350624
+      Indus_Med       Indus_Med   Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG      -0.170992
+      Indus_Med       Indus_Med   Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG       0.015756
+      Indus_Med       Indus_Med   Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG      -0.017787
+      Indus_Med Tajikistan_C_Sarazm.AG         Indus_Med Tajikistan_C_Sarazm.AG       1.213662
+      Indus_Med Tajikistan_C_Sarazm.AG         Indus_Med Uzbekistan_SappaliTepe_BA.AG       0.234592
+      Indus_Med Tajikistan_C_Sarazm.AG   Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG       0.427826
+      Indus_Med Tajikistan_C_Sarazm.AG   Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG       0.228222
+      Indus_Med Tajikistan_C_Sarazm.AG   Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG       0.043736
+      Indus_Med Uzbekistan_SappaliTepe_BA.AG         Indus_Med Uzbekistan_SappaliTepe_BA.AG       0.407200
+      Indus_Med Uzbekistan_SappaliTepe_BA.AG   Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG       0.010650
+      Indus_Med Uzbekistan_SappaliTepe_BA.AG   Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG       0.103639
+      Indus_Med Uzbekistan_SappaliTepe_BA.AG   Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG       0.108146
+Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG   Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG       3.646678
+Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG   Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG       0.488309
+Tajikistan_C_Sarazm.AG Tajikistan_C_Sarazm.AG   Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG       0.074174
+Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG   Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG       0.442625
+Tajikistan_C_Sarazm.AG Uzbekistan_SappaliTepe_BA.AG   Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG       0.133986
+Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG   Uzbekistan_SappaliTepe_BA.AG Uzbekistan_SappaliTepe_BA.AG       0.241178

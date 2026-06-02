@@ -1,0 +1,49 @@
+parameter file: par.qpfstats
+### THE INPUT PARAMETERS
+##PARAMETER NAME: VALUE
+genotypename: test1.geno
+snpname: test1.snp
+indivname: test1.ind
+poplistname: poplist
+fstatsoutname: test1.fstats
+allsnps: YES
+hires: YES
+inbreed: NO
+## qpfstats version: 1002
+inbreed set NO
+allsnps set
+inbreed set NO
+np: 3 n: 6 nbasis: 3 coefsize: 18
+outpop: NULL 
+valid snps: 15
+                     pop : size   INBREED
+  0                   AG :    1    NO
+  1                   BG :    1    NO
+  2                   zz :    3    NO
+before setwt numsnps: 17
+setwt numsnps: 11
+number of blocks for moving block jackknife: 12
+snps: 11  indivs: 5
+pop:                   AG  hetrate:     0.167 valid snps:         9 samples:    1
+pop:                   BG  hetrate:     0.167 valid snps:         9 samples:    1
+pop:                   zz  hetrate:     0.218 valid snps:        11 samples:    3
+lambdascale:     1.705
+statistics multiplied by 1000
+fst:
+        A    B    z 
+  A     0 -200  411
+  B  -200    0  411
+  z   411  411    0
+
+f2:
+        A    B    z 
+  A     0 -122  455
+  B  -122    0  455
+  z   455  455    0
+
+adjusted sigs: 0
+time in dofstats:     0.000
+basis:   1   1    -0.106727     0.119270 ::    -0.106567     0.372513
+basis:   1   2    -0.053363     0.198191 ::    -0.053284     0.410598
+basis:   2   2     0.430402     0.275807 ::     0.409219     0.398091
+##end of qpfstats:        0.000 seconds cpu        0.000 Mbytes in use

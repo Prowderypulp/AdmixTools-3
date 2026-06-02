@@ -1,0 +1,4 @@
+fstatsname: rust7.fstats
+popleft:    bleft
+popright:   bright
+allsnps:    YES

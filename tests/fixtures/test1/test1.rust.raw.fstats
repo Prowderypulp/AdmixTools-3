@@ -1,0 +1,10 @@
+##fbasis.  basepop: AG ::  f3*1000 covar*1000000
+             BG              BG    -71.428571
+             BG              zz    -35.714286
+             zz              zz    219.047619
+             BG              BG                BG              BG    5102.040816
+             BG              BG                BG              zz    2551.020408
+             BG              BG                zz              zz    6179.138322
+             BG              zz                BG              zz   16156.462585
+             BG              zz                zz              zz   17970.521542
+             zz              zz                zz              zz   33167.044596

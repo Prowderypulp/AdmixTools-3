@@ -1,0 +1,52 @@
+[workspace]
+members = [
+    "admx-core",
+    "admx-io",
+    "admx-fstats",
+    "admx-rank",
+    "admx-qpwave",
+    "admx-qpadm",
+    "admx-cli",
+]
+resolver = "2"
+
+[workspace.package]
+edition = "2021"
+rust-version = "1.75"
+version = "0.1.0"
+authors = ["AdmixTools Team"]
+
+[workspace.dependencies]
+# Intra-workspace dependencies
+admx-core = { path = "admx-core" }
+admx-io = { path = "admx-io" }
+admx-fstats = { path = "admx-fstats" }
+admx-rank = { path = "admx-rank" }
+admx-qpwave = { path = "admx-qpwave" }
+admx-qpadm = { path = "admx-qpadm" }
+
+# Linear algebra — openblas-src provides symbols for both blas-sys and lapack-sys.
+# We anchor it in admx-core; downstream crates get it transitively.
+lapack = "0.19"
+blas = "0.22"
+openblas-src = { version = "0.10", features = ["system"] }
+
+# Array abstractions
+ndarray = "0.15"
+
+# Parallelism
+rayon = "1.8"
+
+# IO
+flate2 = "1.0"
+memmap2 = "0.9"
+
+# RNG (for bootstrap in qpAdm — must match legacy LCG exactly)
+rand = "0.8"
+
+# Error handling
+thiserror = "1.0"
+
+# Utilities
+memchr = "2.7"
+log = "0.4"

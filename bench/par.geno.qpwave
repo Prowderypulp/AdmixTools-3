@@ -1,0 +1,7 @@
+genotypename: /home/drtex/Disk2/QP/fstatistic/final.geno
+snpname:      /home/drtex/Disk2/QP/fstatistic/final.snp
+indivname:    /home/drtex/Disk2/QP/fstatistic/final.ind
+popleft:      bleft
+popright:     bright
+allsnps:      YES
+inbreed:      YES

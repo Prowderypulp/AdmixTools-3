@@ -1,0 +1,4 @@
+fstatsname: c.fstats
+popleft:    bleft
+popright:   bright
+allsnps:    YES

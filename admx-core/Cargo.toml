@@ -1,0 +1,14 @@
+[package]
+name = "admx-core"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+
+[dependencies]
+lapack.workspace = true
+blas.workspace = true
+openblas-src.workspace = true
+ndarray.workspace = true
+thiserror.workspace = true
+rand.workspace = true

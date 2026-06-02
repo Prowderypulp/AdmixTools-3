@@ -1,0 +1,13 @@
+# Rust build output
+/target
+
+# gprof profiling output (left by the C reference binaries)
+gmon.out
+**/gmon.out
+
+# Benchmark scratch / diagnostic dumps (regenerated on demand)
+bench/*.kfs
+bench/*.kfs.txt
+bench/*.tbl
+bench/*.fstat.raw
+bench/*.time*.txt
