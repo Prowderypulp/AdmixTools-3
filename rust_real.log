@@ -1,0 +1,79 @@
+qpAdm: parameter file: parfile.txt
+### THE INPUT PARAMETERS
+##PARAMETER NAME: VALUE
+genotypename: final.geno
+snpname: final.snp
+indivname: final.ind
+popleft: left1.txt
+popright: right1.txt
+details: YES
+allsnps: YES
+summary: YES
+inbreed: NO
+## -------------
+left pops:
+            SQ78W673
+   Indus_Periphery_M
+          Kurumba.DG
+Russia_LBA_Srubnaya.AG
+               Riang
+
+right pops:
+            Mbuti.DG
+Russia_YuzhniyOleniyOstrov_Mesolithic.AG
+Serbia_IronGates_Mesolithic
+Turkey_Central_Boncuklu_PPN.AG
+Iran_TepeAbdulHosein_N.SG
+ Mongolia_North_N.AG
+      Jordan_PPNB.AG
+                 CHG
+                WSHG
+              Ami.DG
+           Xingyi_EN
+
+codimension 1
+f4info: rank: 3 dof: 7.000 chisq: 7.692
+
+full rank
+f4info: rank: 4 dof: 0.000 chisq: 0.000
+
+best coefficients: 
+    0.255     0.580     0.125     0.040 
+bootstrap saimpling of F-coeffs: 1000
+zzjmean 
+    0.253     0.584     0.125     0.038 
+      std. errors: 
+    0.076     0.107     0.027     0.047 
+
+error covariance (* 1,000,000)
+  5734  -6974   -973   2212 
+ -6974  11546     62  -4634 
+  -973     62    742    169 
+  2212  -4634    169   2253 
+
+
+ fixed pat     wt  dof     chisq       tail prob
+ 0000          0     7     7.692        0.360528     0.255     0.580     0.125     0.040 
+ 1000          1     8    18.910        0.015347     0.000     0.919     0.156    -0.075  infeasible
+ 0100          1     8    46.806        0.000000     0.620     0.000     0.116     0.265 
+ 0010          1     8    28.592        0.000374     0.347     0.697     0.000    -0.045  infeasible
+ 0001          1     8     9.095        0.334379     0.226     0.656     0.118     0.000 
+ 1100          2     9   353.166        0.000000     0.000     0.000     0.496     0.504 
+ 1010          2     9    60.445        0.000000     0.000     1.269     0.000    -0.269  infeasible
+ 0110          2     9    63.221        0.000000     0.772     0.000     0.000     0.228 
+ 1001          2     9    21.262        0.011535     0.000     0.814     0.186     0.000 
+ 0101          2     9   166.985        0.000000     1.094     0.000    -0.094     0.000  infeasible
+ 0011          2     9   147.869        0.000000     0.424     0.576     0.000     0.000 
+ 1110          3    10  1642.969        0.000000     0.000     0.000     0.000     1.000 
+ 1101          3    10  1641.875        0.000000     0.000     0.000     1.000     0.000 
+ 1011          3    10    88.542        0.000000     0.000     1.000     0.000     0.000 
+ 0111          3    10   173.608        0.000000     1.000     0.000     0.000     0.000 
+best pat: 0000                0.360528          -  - 
+best pat: 0001                0.334379          -  - 
+best pat: 0001                0.334379  p-value for nested model:        0.236301
+best pat: 1001                0.011535          -  - 
+best pat: 1001                0.011535  p-value for nested model:        0.000486
+best pat: 1011                0.000000          -  - 
+best pat: 1011                0.000000  p-value for nested model:        0.000000
+summ: SQ78W673   4     0.360528 
+    0.000     1.000     0.000     0.000 

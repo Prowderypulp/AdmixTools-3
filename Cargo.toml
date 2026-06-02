@@ -1,3 +1,11 @@
+# Release tuning: whole-program optimization. Does not change numerical output —
+# only enables cross-crate inlining (LTO) and a single codegen unit so the hot
+# f-stat loop optimizes across the admx-io / admx-fstats boundary.
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+
 [workspace]
 members = [
     "admx-core",

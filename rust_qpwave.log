@@ -1,0 +1,120 @@
+qpWave: parameter file: parfile.txt
+### THE INPUT PARAMETERS
+##PARAMETER NAME: VALUE
+genotypename: final.geno
+snpname: final.snp
+indivname: final.ind
+popleft: left1.txt
+popright: right1.txt
+details: YES
+allsnps: YES
+summary: YES
+inbreed: NO
+## -------------
+left pops:
+            SQ78W673
+   Indus_Periphery_M
+          Kurumba.DG
+Russia_LBA_Srubnaya.AG
+               Riang
+
+right pops:
+            Mbuti.DG
+Russia_YuzhniyOleniyOstrov_Mesolithic.AG
+Serbia_IronGates_Mesolithic
+Turkey_Central_Boncuklu_PPN.AG
+Iran_TepeAbdulHosein_N.SG
+ Mongolia_North_N.AG
+      Jordan_PPNB.AG
+                 CHG
+                WSHG
+              Ami.DG
+           Xingyi_EN
+
+f4info: 
+f4rank: 0 dof:     40 chisq:  8699.263 tail:        0.000000000e0 dofdiff:      0 chisqdiff:     0.000 taildiff:        1.000000000e0
+
+f4info: 
+f4rank: 1 dof:     27 chisq:  1297.269 tail:     1.685958452e-256 dofdiff:     13 chisqdiff:  7401.993 taildiff:        0.000000000e0
+B:
+          scale     1.000 
+Russia_YuzhniyOleniyOstrov_Mesolithic.AG     1.011 
+Serbia_IronGates_Mesolithic     1.174 
+Turkey_Central_Boncuklu_PPN.AG     1.026 
+Iran_TepeAbdulHosein_N.SG     0.598 
+Mongolia_North_N.AG    -1.152 
+ Jordan_PPNB.AG     0.960 
+            CHG     0.853 
+           WSHG     0.709 
+         Ami.DG    -1.431 
+      Xingyi_EN    -0.813 
+A:
+          scale    77.026 
+Indus_Periphery_M     0.280 
+     Kurumba.DG    -0.319 
+Russia_LBA_Srubnaya.AG     1.403 
+          Riang    -1.361 
+
+f4info: 
+f4rank: 2 dof:     16 chisq:    95.410 tail:      2.492728685e-13 dofdiff:     11 chisqdiff:  1201.859 taildiff:     6.436853811e-251
+B:
+          scale     1.000     1.000 
+Russia_YuzhniyOleniyOstrov_Mesolithic.AG     1.050     0.898 
+Serbia_IronGates_Mesolithic     1.222     1.328 
+Turkey_Central_Boncuklu_PPN.AG     1.032     0.674 
+Iran_TepeAbdulHosein_N.SG     0.563    -0.595 
+Mongolia_North_N.AG    -1.185     1.650 
+ Jordan_PPNB.AG     0.926     0.457 
+            CHG     0.849     0.044 
+           WSHG     0.662     0.641 
+         Ami.DG    -1.406     1.754 
+      Xingyi_EN    -0.790     0.451 
+A:
+          scale    76.635   171.786 
+Indus_Periphery_M     0.215    -0.774 
+     Kurumba.DG    -0.350     0.004 
+Russia_LBA_Srubnaya.AG     1.542     1.194 
+          Riang    -1.205     1.405 
+
+f4info: 
+f4rank: 3 dof:      7 chisq:     8.386 tail:       2.998055823e-1 dofdiff:      9 chisqdiff:    87.024 taildiff:      6.425985691e-15
+B:
+          scale     1.000     1.000     1.000 
+Russia_YuzhniyOleniyOstrov_Mesolithic.AG     1.074     0.660    -1.074 
+Serbia_IronGates_Mesolithic     1.254     1.035    -1.827 
+Turkey_Central_Boncuklu_PPN.AG     1.054     0.436    -0.224 
+Iran_TepeAbdulHosein_N.SG     0.569    -0.718     1.915 
+Mongolia_North_N.AG    -1.115     1.819     0.799 
+ Jordan_PPNB.AG     0.954     0.252     0.237 
+            CHG     0.865    -0.157     0.904 
+           WSHG     0.705     0.483     0.149 
+         Ami.DG    -1.345     1.953     0.502 
+      Xingyi_EN    -0.794     0.587    -0.088 
+A:
+          scale    74.978   148.760   567.391 
+Indus_Periphery_M     0.342    -0.328     1.332 
+     Kurumba.DG    -0.507    -0.306    -1.082 
+Russia_LBA_Srubnaya.AG     1.670     1.104     0.432 
+          Riang    -0.914     1.606     0.932 
+
+f4info: 
+f4rank: 4 dof:      0 chisq:     0.000 tail:        1.000000000e0 dofdiff:      7 chisqdiff:     8.386 taildiff:       2.998055823e-1
+B:
+          scale   168.723   153.101    47.001    53.793 
+Russia_YuzhniyOleniyOstrov_Mesolithic.AG     0.039    -1.173     1.303    -0.435 
+Serbia_IronGates_Mesolithic    -0.131    -1.147     1.619    -0.373 
+Turkey_Central_Boncuklu_PPN.AG     0.615    -1.119     1.269    -0.434 
+Iran_TepeAbdulHosein_N.SG     1.528    -0.959     0.427    -0.609 
+Mongolia_North_N.AG    -1.131     0.417    -0.475     1.902 
+ Jordan_PPNB.AG     0.649    -1.252     1.080    -0.472 
+            CHG     1.289    -1.093     0.911    -0.546 
+           WSHG     0.058    -1.281     0.859    -0.236 
+         Ami.DG    -1.734     0.412    -0.738     2.035 
+      Xingyi_EN    -0.947     0.623    -0.622     0.882 
+A:
+          scale     2.000     2.000     2.000     2.000 
+Indus_Periphery_M     2.000     0.000     0.000     0.000 
+     Kurumba.DG     0.000     2.000     0.000     0.000 
+Russia_LBA_Srubnaya.AG     0.000     0.000     2.000     0.000 
+          Riang     0.000     0.000     0.000     2.000 
+

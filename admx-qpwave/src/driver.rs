@@ -61,12 +61,16 @@ pub fn run_qpwave(config: &QpWaveConfig) -> AdmxResult<Vec<F4Info>> {
         let snpname = config.snpname.as_ref().unwrap();
         let indivname = config.indivname.as_ref().unwrap();
 
+        // Match C qpWave `mkfstats` (qpWave.c:846-854): the internal poplist for
+        // the fstats computation is [basepop?] + poprlist (RIGHT) + popllist
+        // (LEFT). With no basepop set, poplist[0] = popright[0]. The f3-basis
+        // anchor choice is numerically a no-op for the rank test (anchor-
+        // invariant), but we keep this in sync with qpAdm and with C.
         let mut pop_list = Vec::new();
-        pop_list.push(config.popleft[0].clone());
-        for p in &config.popleft[1..] {
+        for p in &config.popright {
             if !pop_list.contains(p) { pop_list.push(p.clone()); }
         }
-        for p in &config.popright {
+        for p in &config.popleft {
             if !pop_list.contains(p) { pop_list.push(p.clone()); }
         }
 

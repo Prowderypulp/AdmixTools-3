@@ -1,5 +1,158 @@
 # Changelog — AdmixTools Rust Port
 
+## [2026-06-02] — Performance: parallel f-stat scan (output bit-identical)
+
+Made the dominant computation ~4× faster on real data with **byte-for-byte
+identical output** (verified three ways — see Verification below).
+
+### The hot path
+Profiling the maitrus/seq run (`ADMX_PROFILE=1`, env-gated stderr timing added to
+`run_qpfstats`/`run_qpadm`) showed the per-SNP f-stat scan dominates: **~35 s** of
+a ~50 s run; jackknife/WLS were <1 s. The scan was single-threaded.
+
+### Parallel SNP scan (`admx-fstats/src/driver.rs`)
+- The jackknife block accumulators (`btop`/`bbot`/`wjack`/`pair_*`) are already
+  *per-block*, and blocks are disjoint contiguous SNP ranges. So parallelizing
+  **over whole blocks** keeps every accumulator summed in the exact serial SNP
+  order — bit-identical, no cross-block float regrouping. Implementation:
+  (1) parallel polymorphism flag per SNP; (2) serial block-boundary assignment
+  (metadata only, replicating the serial state machine); (3) rayon over blocks;
+  (4) serial merge in block order. The hetrate globals (`sum_p`/`n_p`, qpfstats
+  only) are merged per-block; the reorder stays below the printed precision
+  (verified — qpfstats output incl. hetrate is byte-identical).
+- Needs random SNP access: added `GenoReader::random_access()` returning the
+  mmap byte slice + record layout (`admx-io`), implemented for PACKEDANCESTRYMAP.
+  Streaming/text readers (EIGENSTRAT) return `None` and use the unchanged serial
+  loop. The whole new path is gated on this — the serial loop is preserved.
+- Micro-opt: precompute a compact `(ind, pop)` list so the inner loop visits only
+  the ~118 in-poplist individuals instead of all 893 per SNP (output-preserving).
+- Per-SNP scratch (`counts`/`p`/`aax`/masks) is now reused per thread instead of
+  reallocated for every SNP.
+
+### Build profile (`Cargo.toml`)
+- Added `[profile.release]` `lto = "fat"`, `codegen-units = 1` — whole-program
+  inlining across the io/fstats boundary. Provably output-neutral; ~3% on its own.
+
+### Verification (bit-identical invariant, now permanent)
+1. Full qpAdm and qpfstats outputs (incl. hetrate) diffed **byte-identical**
+   against pre-optimization baselines on the 1.2M-SNP real dataset.
+2. New `cargo test` equivalence tests in `admx-fstats/src/driver.rs`
+   (`parallel_matches_serial_allsnps_yes` / `_no`): a multi-block in-memory packed
+   fixture is run through the parallel path and through a `ForceSerial` wrapper
+   (`random_access()` → `None`), asserting `means`/`covar`/`w3`/`lambdascale`/
+   `fst`/`f2`/`fs_*` bit-identical via `f64::to_bits`, with hetrate equal within
+   fp-reorder tolerance. Covers **both** `allsnps` modes — the `!all_present`
+   branch the real-data run (allsnps:YES) never exercised.
+3. The 3 `golden_log` C-fidelity tests and the 2 RNG bit-identity tests stay green.
+
+### Results (maitrus/seq, 16-core, page cache warm)
+- SNP scan: **35.1 s → ~8.1 s** (~4.3×). qpfstats end-to-end wall ~10.4 s
+  (User CPU ~122 s ≈ 12× parallel utilization).
+- Peak RSS unchanged (~2.29 GB): it is the demand-paged mmap of the 2.08 GB
+  `final.geno`, not heap — there is little to cut without changing the IO model.
+
+### Not done — bootstrap left serial (deliberate)
+- The qpAdm `numboot` bootstrap (2000 independent `doranktest` calls) is the other
+  big phase, but each call enters OpenBLAS (`dspev`/`dgemm`/`pdinv`). The system
+  OpenBLAS build is **not safe to enter concurrently** from multiple application
+  threads — a rayon-parallel version (single-threaded BLAS per worker) deadlocked.
+  Reverted; the bootstrap stays serial with multi-threaded BLAS per call. Its
+  wall time is BLAS-thread/-load dependent and noisy (~7–23 s observed); it is
+  unchanged from before this work. A safe parallelization would require pure-Rust
+  replacements for the small-matrix LAPACK calls (future work).
+
+## [2026-06-02] — qpAdm bootstrap RNG made bit-identical to C
+
+The `numboot:` bootstrap std-errors now match the C binary at printed precision
+under a fixed `seed:`. Two defects in the noise generator, both fixed:
+
+### Fixed — bootstrap noise generator (`admx-qpadm/src/{prng,bootstrap}.rs`)
+- **Wrong gaussian method.** Rust used Box-Muller (sin/cos, 2 uniforms/pair, no
+  caching); C `gauss()` (`nicksrc/gauss.c`) is the Marsaglia **polar** method —
+  rejection-sampled pair on the unit disc with a static `iset`/`gset` cache that
+  returns one value and stores the other. Different algorithm → different sequence
+  from identical uniforms. Ported exactly; the cache is now instance state on
+  `LegacyLcg` and must persist across all `gauss()` calls in a run.
+- **Wrong Cholesky.** `genmultgauss` factored the covariance with LAPACK `dpotrf`;
+  C uses the Numerical-Recipes `choldc` (`nicksrc/linsubs.c`) with a **descending**
+  inner accumulation (`k = i-1 .. 0`), which rounds differently. Replaced with a
+  `choldc_lower` port. The existing multiply scaffold was already correct against
+  C's transposed-Cholesky `mulmat` (ascending `k`, terms beyond `j` are exactly 0).
+
+### Verified — bit-for-bit against the legacy library
+- New tests `gauss_matches_legacy_c` / `genmultgauss_matches_legacy_c` assert
+  `f64::to_bits` equality against values generated by C's own `libnick.a`
+  (`SRAND(1923698036)` → `gaussa`, then `genmultgauss` on a known 3×3 covariance).
+- Real-data qpAdm (maitrus/seq, `seed: 1923698036`): std-errors
+  `0.088 0.127 0.026 0.053` — exact match to C at printed precision (was `0.094 …`).
+- The global glibc `random()` state is process-wide, so a `RNG_TEST_LOCK` mutex now
+  serializes RNG-touching tests (Rust runs tests in parallel threads).
+
+### Known limitation (RNG ruled out, not yet localized)
+- The raw error covariance still differs from C at the 4th significant figure
+  (~0.05%, e.g. `7782` vs `7778` ×1e6). The generator is proven bit-identical *given
+  identical inputs*, so the RNG is not the cause. The likely dominant driver is the
+  `yvar` covariance fed into `genmultgauss`: the upstream f-stat/jackknife pipeline
+  already differs from C at ~1e-6 (see `real_benchmark.md`, rank-0 chisq 8699.256 vs
+  8699.263), and that propagates through the correct generator. Downstream rank-test /
+  ALS / eigensolver / `calcadm` rounding (LAPACK vs nicksrc) may also contribute. Not
+  localized further — out of scope for the RNG work. See `bugs.md`.
+
+### Method note
+- The original `0.088` could not have been reproduced as-is: the parfile had no
+  `seed:`, so C used a time/pid `seednum()`. C *prints* the seed it chose
+  (`seed: 1923698036`); set that explicitly in both binaries to get a fixed target.
+
+## [2026-06-02] — `inbreed:NO` fidelity + performance benchmark
+
+Closes the last known real-data divergence. On the maitrus/seq dataset
+(`final.geno`, 5 left × 11 right pops, `inbreed:NO allsnps:YES`) qpAdm now
+matches the C binary exactly on the headline statistics, and a measured
+time/memory benchmark shows the port is competitive-to-better than C.
+
+### Fixed — qpfstats `hashets == 0` per-fstat sigma adjustment (P0, `inbreed:NO` only)
+- C `qpsubs.c:4864-4882`: for each f-statistic, if a **non-inbred** population with
+  **no observed heterozygous genotype call** (C `counthets`, i.e. any individual
+  genotype `g == 1` — distinct from the model-based hetrate) appears on a diagonal
+  term (its index occurs >1× among the stat's four `(a,b,c,d)` indices), C inflates
+  `jsig = sqrt(jsig^2 + 100)`, heavily downweighting that fstat in the WLS consensus
+  fit. Pseudo-haploid aDNA pops (genotypes only `0`/`2`) have a positive hetrate but
+  zero het *calls*, so they trigger it. The block is gated on the inbreed flag (under
+  `inbreed:YES` every pop is inbred and C `continue`s for all of them), which is
+  exactly why the earlier `inbreed:YES` fidelity pass never exercised this path.
+- Fix: `admx-fstats/src/driver.rs` now tracks `het_seen` per pop in the genotype loop
+  and applies the `sqrt(jsig^2 + 100)` inflation between the per-fstat jackknife and the
+  flatten step, after the `gbot[j] < .001` zeroing guard (so no-valid-SNP stats are
+  skipped and don't count toward `numadj`). `QpfstatsResult` gains `num_adjusted`;
+  `qpfstats` now prints the real `adjusted sigs` count instead of a hardcoded `0`.
+- The basis-anchor pop ordering in qpAdm and qpWave drivers was aligned to C's
+  `mkfstats` (RIGHT pops first; with no basepop, `poplist[0]` = first right pop). For
+  qpWave this is numerically a no-op (anchor-invariant rank test); for qpAdm it changes
+  the regularized WLS anchor and is part of the chisq/coefficient correction below.
+
+### Verified — real-data match (maitrus/seq, `inbreed:NO`)
+- qpAdm base model: `chisq: 8.544`, coefficients `0.311 0.492 0.125 0.071` — **exact**
+  match to C (was `7.692` / `0.255 0.580 0.125 0.040` before the fix).
+- qpfstats: `adjusted sigs: 1440` and `lambdascale: 3.160` — both match C.
+- All golden fixtures and the `inbreed:YES` path remain unchanged (16/16 tests pass).
+- Caveat: bootstrap std-errors still differ at the ~3rd decimal (legacy LCG PRNG stream
+  is not bit-identical); headline statistics match.
+
+### Benchmark — time & memory (maitrus/seq, measured via `/usr/bin/time`)
+Do **not** use the C `##end of qpAdm: 8.421 seconds / 2.953 Mbytes` footer for
+benchmarking — that is the in-binary allocator counter and undercounts wall/RSS by
+~25×/~1000×. Against the real measured C run (`c.time`):
+
+| Metric        | C binary | Rust (release) | Verdict          |
+|---------------|----------|----------------|------------------|
+| Wall (real)   | 210.71 s | **52.06 s**    | ~4× faster       |
+| CPU (user)    | 209.41 s | 215.32 s       | ~same (+3%)      |
+| Peak RSS      | 3.06 GB  | **2.29 GB**    | ~25% less        |
+
+Same total compute (faithful port), ~4× faster wall via parallelism (C is
+single-threaded), and a leaner footprint. Both runs are dominated by the 2.08 GB
+`final.geno`.
+
 ## [2026-06-02] — Fidelity pass: qpfstats/qpWave/qpAdm vs C binaries
 
 Validated against the installed C AdmixTools (`/home/drtex/AdmixTools/bin`) on both

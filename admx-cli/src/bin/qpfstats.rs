@@ -191,7 +191,7 @@ fn main() -> AdmxResult<()> {
     }
     println!();
 
-    println!("adjusted sigs: 0");
+    println!("adjusted sigs: {}", result.num_adjusted);
 
     // Basis rows
     let basis = FBasis::new(0, np); 

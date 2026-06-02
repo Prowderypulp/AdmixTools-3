@@ -75,20 +75,41 @@ on the small fixtures and a real 1.23M-SNP × 893-indiv dataset. See `changelog.
 - `admx-qpwave` — **done**. Matches C exactly via precomputed `.fstats` AND the direct
   genotype path (`inbreed:YES`): chisq 51.110 / 7.640 on the benchmark split.
 - `admx-qpadm` — **done** (deterministic). Coefficients, fixed-pattern chi-square table,
-  and nested-model p-value match C (e.g. 0.757 / 0.243 on the benchmark split). Bootstrap
-  std-errors not yet bit-identical (placeholder LCG in `prng.rs` — P2).
+  and nested-model p-value match C (e.g. 0.757 / 0.243 on the benchmark split). Now also
+  validated under `inbreed:NO` on real data (maitrus/seq): chisq `8.544` and coefficients
+  `0.311 0.492 0.125 0.071` are an **exact** match to C after porting the `hashets==0`
+  sigma adjustment. Bootstrap noise generator is now **bit-identical** to C (Marsaglia
+  polar `gauss()` + Numerical-Recipes `choldc`, verified against `libnick.a`); with a
+  fixed `seed:` the std-errors match C at printed precision (`0.088 0.127 0.026 0.053`).
+  Residual covariance difference (~0.05%) is downstream linalg, not the RNG — P2.
 - `admx-cli/qpWave`, `admx-cli/qpAdm` — full CLIs (parfile → run → C-format output).
 
 `qpfstats` matches C to ~6 decimals (means **and** sigmas) under `inbreed:YES` /
-`allsnps:YES`, and runs ~17.5× faster than C on the benchmark dataset.
+`allsnps:YES`, and runs ~17.5× faster than C on the benchmark dataset. On the real
+maitrus/seq run it reports `adjusted sigs: 1440` / `lambdascale: 3.160`, both matching C.
+
+### Performance (real-data, maitrus/seq, measured `/usr/bin/time`)
+qpAdm: wall **52 s** vs C **211 s** (~4× faster, port parallelizes; C single-threaded),
+~same total CPU (215 s vs 209 s), peak RSS **2.29 GB** vs **3.06 GB** (~25% less). See
+`real_benchmark.md`. (Ignore the C `##end of qpAdm` footer — it undercounts ~25×.)
+
+**Parallel f-stat scan (2026-06-02):** the dominant per-SNP scan was parallelized over
+jackknife blocks (output bit-identical — per-block sums keep serial SNP order): SNP scan
+**35 s → ~8 s** (~4.3×), qpfstats end-to-end wall ~10 s. `lto=fat` build profile added.
+RSS unchanged (mmap-dominated). The qpAdm bootstrap stays serial (OpenBLAS isn't safe to
+enter concurrently — a parallel version deadlocked). See `changelog.md` / `real_benchmark.md`.
 
 ### Golden tests
 `admx-cli/tests/golden_log.rs`: `test_qpfstats_golden`, `test_qpwave_golden`, and
 `test_qpadm_golden` (now a real test) all pass.
 
 ### Known remaining gaps (P2)
-- qpAdm bootstrap RNG (`admx-qpadm/src/prng.rs`) — non-deterministic std-errors.
-- `hashets==0` variance adjustment unported (does not fire under `inbreed:YES`).
+- qpAdm bootstrap covariance residual — noise generator is now bit-identical (given
+  identical inputs), so the RNG is ruled out; a ~0.05% covariance residual remains,
+  most likely from the upstream `yvar` (already ~1e-6 off C) propagating through, plus
+  downstream linalg rounding (LAPACK vs nicksrc). std-errors match C at printed precision.
+- ~~`hashets==0` variance adjustment unported~~ — **ported 2026-06-02**
+  (`admx-fstats/src/driver.rs`); validated under `inbreed:NO` on real data.
 
 ## Out of scope (both phases)
 

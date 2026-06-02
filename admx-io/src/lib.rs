@@ -84,6 +84,15 @@ pub trait GenoReader {
 
     /// Read the next record into `dst`. Returns `Ok(false)` at EOF.
     fn read_record(&mut self, dst: &mut [u8]) -> Result<bool, std::io::Error>;
+
+    /// Random-access view of the canonical record bytes, for readers backed by a
+    /// contiguous in-memory or mmap buffer (PACKEDANCESTRYMAP, in-memory BED).
+    /// Returns `(bytes, off0, stride, reclen)` such that SNP `idx`'s record is
+    /// `&bytes[off0 + idx*stride .. off0 + idx*stride + reclen]`. The returned
+    /// slice is shareable across threads (`&[u8]` is `Sync`), enabling parallel
+    /// SNP-major scans. Streaming/text readers (EIGENSTRAT) return `None` and
+    /// callers fall back to the sequential `read_record` path.
+    fn random_access(&self) -> Option<(&[u8], usize, usize, usize)> { None }
 }
 
 /// Quick check if a file is PACKEDANCESTRYMAP.

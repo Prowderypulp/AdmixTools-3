@@ -87,6 +87,13 @@ impl GenoReader for PackedAmReader {
         self.next_idx += 1;
         Ok(true)
     }
+
+    fn random_access(&self) -> Option<(&[u8], usize, usize, usize)> {
+        // SNP idx record begins at rlen*(1+idx); records are rlen apart (the
+        // header occupies record 0). The canonical record is the first
+        // `rec_bytes` of each rlen-sized slot.
+        Some((&self.storage[..], self.rlen, self.rlen, self.rec_bytes))
+    }
 }
 
 const HEADER_MAGIC: &[u8] = b"GENO ";

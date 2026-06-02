@@ -39,6 +39,9 @@ fn binary_string(mut val: usize, len: usize) -> String {
 }
 
 pub fn run_qpadm(config: &QpAdmConfig) -> AdmxResult<()> {
+    // Env-gated phase timing to stderr (ADMX_PROFILE=1). Does not affect output.
+    let _prof = std::env::var("ADMX_PROFILE").is_ok();
+    let _t = std::time::Instant::now();
     let (means, covar, pop_labels, basis_indices, anchor): (ndarray::Array1<f64>, ndarray::Array2<f64>, Vec<String>, Vec<(usize, usize)>, String) = if let Some(ref fstats_file) = config.fstatsname {
         load_fstats(Path::new(fstats_file))?
     } else {
@@ -54,12 +57,17 @@ pub fn run_qpadm(config: &QpAdmConfig) -> AdmxResult<()> {
         let snpname = config.snpname.as_ref().unwrap();
         let indivname = config.indivname.as_ref().unwrap();
 
+        // Match C qpAdm `mkfstats` (qpAdm.c:2086-2094): the internal poplist for
+        // the fstats computation is [basepop?] + poprlist (RIGHT) + popllist
+        // (LEFT). With no basepop set, poplist[0] = popright[0], so the f3-basis
+        // anchor is the first RIGHT pop (e.g. Mbuti), NOT popleft[0]. The anchor
+        // choice changes the regularized WLS consensus fit, so anchoring on a
+        // left pop produces materially different means/covar (and chisq).
         let mut pop_list = Vec::new();
-        pop_list.push(config.popleft[0].clone());
-        for p in &config.popleft[1..] {
+        for p in &config.popright {
             if !pop_list.contains(p) { pop_list.push(p.clone()); }
         }
-        for p in &config.popright {
+        for p in &config.popleft {
             if !pop_list.contains(p) { pop_list.push(p.clone()); }
         }
 
@@ -119,7 +127,8 @@ pub fn run_qpadm(config: &QpAdmConfig) -> AdmxResult<()> {
         };
 
         let result = run_qpfstats(reader.as_mut(), &snps, &indivs, &pop_list, &qpf_config)?;
-        
+        if _prof { eprintln!("[prof] run_qpfstats {:>8.3}s", _t.elapsed().as_secs_f64()); }
+
         let basis = FBasis::new(0, pop_list.len()); 
         let basis_indices: Vec<(usize, usize)> = basis.pops.iter()
             .flat_map(|&a| basis.pops.iter().filter(move |&&b| b >= a).map(move |&b| (a, b)))
@@ -254,10 +263,13 @@ pub fn run_qpadm(config: &QpAdmConfig) -> AdmxResult<()> {
     for w in &ww { print!("{:9.3} ", w); }
     println!();
 
+    if _prof { eprintln!("[prof] rank_ladder  {:>8.3}s", _t.elapsed().as_secs_f64()); }
+    let _tb = std::time::Instant::now();
     let mut jmean = vec![0.0; nl];
     let mut var = vec![0.0; nl * nl];
     let mut lcg = LegacyLcg::new(config.seed as u64);
     calcevarboot(&mut jmean, &mut var, &ymean, &yvar, nl, nr, nl * nr, config.numboot, &mut lcg).map_err(|_| AdmxError::Fatal("calcevarboot failed".into()))?;
+    if _prof { eprintln!("[prof] bootstrap    {:>8.3}s", _tb.elapsed().as_secs_f64()); }
 
     println!("bootstrap saimpling of F-coeffs: {}", config.numboot);
     println!("zzjmean ");

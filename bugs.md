@@ -18,13 +18,39 @@ real fidelity bugs found by diffing against the C binaries on a 1.23M-SNP datase
   outputs match C.
 
 ### Remaining open gaps
-- **P2 — qpAdm bootstrap RNG.** `admx-qpadm/src/prng.rs` LCG is a placeholder, and the
-  seed differs from C's, so bootstrap covariance / std-errors are not bit-identical.
-- **P2 — `hashets==0` variance adjustment unported** (`qpsubs.c:4864-4882`,
-  `jsig = sqrt(jsig²+100)`). Does not fire on inbreed:YES data; affects non-inbred pops
-  with no observed heterozygotes.
+- **P2 — qpAdm bootstrap covariance residual (RNG ruled out).** The bootstrap *noise
+  generator* is now bit-identical to C given identical inputs (see "Recently closed",
+  proven by `to_bits` tests). With a fixed `seed:` the std-errors match C at printed
+  precision (`0.088 0.127 0.026 0.053`), but the raw error covariance still differs at
+  the 4th significant figure (~0.05%, e.g. 7782 vs 7778 ×1e6). The RNG is *not* the
+  cause. The most likely driver is the `yvar` covariance *fed into* `genmultgauss`:
+  the upstream f-stat/jackknife pipeline already differs from C at ~1e-6 (documented in
+  `real_benchmark.md`: rank-0 chisq 8699.256 vs 8699.263), and that input difference
+  propagates through the (correct) generator into the samples. Downstream rank-test /
+  ALS / eigensolver / `calcadm` rounding (LAPACK vs nicksrc) likely contributes too.
+  Not localized further; closing it would require bit-identical ports of the upstream
+  and/or downstream linalg primitives.
 
 ### Recently closed (2026-06-02)
+- **P2 — qpAdm bootstrap RNG now bit-identical to C.** Two bugs: (1) the gaussian
+  generator was Box-Muller, but C `gauss()` (`nicksrc/gauss.c`) is the Marsaglia
+  *polar* method with a static `iset`/`gset` cache; (2) the multivariate-normal
+  factorization used LAPACK `dpotrf`, but C `genmultgauss` uses the Numerical-Recipes
+  `choldc` (descending inner sum). Ported both in `admx-qpadm/src/{prng,bootstrap}.rs`.
+  Verified bit-for-bit against the legacy `libnick.a` (`gauss_matches_legacy_c`,
+  `genmultgauss_matches_legacy_c` — both assert `f64::to_bits` equality). Key structural
+  finding: in the qpAdm flow `doranktest`→`ranktest` uses an eigenvector init (C's
+  `gaussa` init is commented out), so nothing consumes the RNG except `genmultgauss` —
+  a fresh `srandom(seed)` before the bootstrap matches C exactly. Note: the global
+  glibc `random()` state forced a test mutex (`RNG_TEST_LOCK`) to serialize RNG tests.
+  Remaining std-error residual is downstream linalg (see open gaps).
+- **P0 (inbreed:NO real-data) — `hashets==0` variance adjustment now ported**
+  (`qpsubs.c:4864-4882`, `jsig = sqrt(jsig²+100)`). `admx-fstats/src/driver.rs` tracks
+  `het_seen` per pop and inflates each fstat's sigma when a non-inbred pop with no
+  observed het call lands on a diagonal term. Fires only under `inbreed:NO` (under
+  `inbreed:YES` every pop is inbred and C skips it). qpAdm now matches C exactly on the
+  maitrus/seq run (chisq `8.544`, coeffs `0.311 0.492 0.125 0.071`); qpfstats reports the
+  real `adjusted sigs: 1440`. See `changelog.md` and `real_benchmark.md`.
 - qpfstats jackknife block assignment now matches C (in-loop over used SNPs) → qpfstats,
   qpWave, and qpAdm all match the C binaries on real data including the direct genotype
   path. See `changelog.md` and `bench/RESULTS.md`.
