@@ -1,9 +1,23 @@
 //! Per-SNP accumulation engine.
 //!
-//! Implements the §3.1 optimization: instead of evaluating O(numeg⁴) statistics
-//! per SNP, we accumulate the numeg×numeg M₂ matrix and H vector via BLAS
-//! rank-1 updates, then recover all statistics through a single sparse
-//! contraction at the end.
+//! STALE / ABANDONED — NOT WIRED INTO THE LIVE PATH (no callers).
+//!
+//! This was an attempt at the §3.1 optimization: instead of evaluating
+//! O(numeg⁴) statistics per SNP, accumulate the numeg×numeg M₂ matrix and H
+//! vector, then recover all statistics through a single contraction at the end.
+//!
+//! It was abandoned because it cannot reproduce the C reference bit-for-bit.
+//! Verified against `AdmixTools/src/qpsubs.c:4740` (`dofstats`): C itself does
+//! the naive per-SNP evaluation — `for each SNP { for each stat { yy =
+//! fstatx(...); top[j] += yy } }`. Recovering statistics from an accumulated M₂
+//! reassociates the float additions (different low-order bits) AND cannot
+//! reproduce C's per-SNP-per-statistic drop rule (`yy < -99`). The live path in
+//! `driver.rs::process_record` is the faithful transliteration of C's loop.
+//!
+//! Kept for reference only. Do not wire this in without dropping the
+//! bit-fidelity requirement.
+
+#![allow(dead_code, unused_imports)] // intentionally-kept stale reference module
 
 use ndarray::{Array1, Array2};
 use admx_core::types::DetailedPopCounts;
