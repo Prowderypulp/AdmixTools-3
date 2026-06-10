@@ -1,0 +1,14 @@
+[package]
+name = "admx-cli"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+
+[dependencies]
+admx-core.workspace = true
+admx-io.workspace = true
+admx-fstats.workspace = true
+admx-rank.workspace = true
+admx-qpwave.workspace = true
+admx-qpadm.workspace = true
