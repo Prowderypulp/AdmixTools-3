@@ -4,12 +4,12 @@ use admx_core::types::F4Info;
 use crate::normab::normab;
 
 #[cfg(target_os = "linux")]
-unsafe extern "C" {
+extern "C" {
     fn random() -> std::ffi::c_long;
 }
 
 #[cfg(not(target_os = "linux"))]
-unsafe extern "C" {
+extern "C" {
     fn random() -> std::ffi::c_long;
 }
 
