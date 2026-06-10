@@ -102,7 +102,7 @@ fn test_qpfstats_golden() {
     let par_file = fixture_path.join("par.qpfstats");
     let expected_log = fixture_path.join("test1.c.no.log");
 
-    run_golden_test("qpfstats", &par_file, &expected_log);
+    run_golden_test("qpfstats-rs", &par_file, &expected_log);
 }
 
 #[test]
@@ -116,7 +116,7 @@ fn test_qpwave_golden() {
     let par_file = fixture_path.join("par.qpwave");
     let expected_log = fixture_path.join("test123.c.wave.log");
 
-    run_golden_test("qpWave", &par_file, &expected_log);
+    run_golden_test("qpWave-rs", &par_file, &expected_log);
 }
 
 /// qpAdm has RNG-dependent bootstrap lines (std-errors, error covariance), so a
@@ -133,7 +133,7 @@ fn test_qpadm_golden() {
     fixture_path.push("test_wave");
     let par_file = fixture_path.join("par.qpadm");
 
-    let bin = get_bin_path("qpAdm");
+    let bin = get_bin_path("qpAdm-rs");
     assert!(bin.exists(), "Binary not found: {:?}", bin);
     let output = Command::new(&bin)
         .arg("-p")
